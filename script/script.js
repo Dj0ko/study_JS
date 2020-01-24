@@ -1,16 +1,29 @@
-let money = 90000; 
-let income = 'фриланс'; 
-let addExpenses = 'Квартплата, кредит, еда'; 
-let deposit = true; 
-let mission = 500000; 
-let period = 12;
-let budgetDay = money / 30;
+let num = 266219;
 
-console.log(typeof money);
-console.log(typeof income);
-console.log(typeof deposit);
-console.log(addExpenses.length);
-console.log('Период равен ' + period + ' месяцев');
-console.log('Цель заработать ' + mission + ' рублей');
-console.log(addExpenses.toLowerCase().split(', '));
-console.log('budgetDay: ', budgetDay);
+//Поменяем тип данных на строку
+let str = num.toString();
+
+// Получим массив из цифр
+const arr = str.split('');
+
+// создадим функцию для вычисления произведения цифр
+const doMultiplication = function(array) {
+    let result = 1;
+
+    for (let i = 0; i < array.length; i++) {
+        result = result * array[i];
+    }
+    
+    return result;
+};
+
+// Запустим функцию и получим ответ
+let result = doMultiplication(arr);
+console.log('result: ', result);
+
+// возводим полученный результат в степень 3
+result = result ** 3;
+console.log('result: ', result);
+
+// выводим на экран первые две цифры полученного числа
+alert(result.toString().substring(0, 2));
