@@ -30,7 +30,6 @@ console.log(days[lang]);
 
 let namePerson = prompt('Введите имя', 'Артем');
 
-namePerson === 'Артем' ? console.log('директор') : 
-namePerson === 'Максим' ? console.log('преподаватель') : console.log('студент');
+console.log(namePerson === 'Артем' ? 'директор' : namePerson === 'Максим' ? 'преподаватель' : 'студент');
 
 
