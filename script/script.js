@@ -15,7 +15,14 @@ console.log(typeof deposit);
 console.log(addExpenses.length);
 console.log('Период равен ' + period + ' месяцев');
 console.log('Цель заработать ' + mission + ' рублей');
-console.log(addExpenses.toLowerCase().split(', '));
+//Переведем строку расходов в массив
+let arrExpenses = addExpenses.toLowerCase().split(',');
+
+for (let i = 0; i < arrExpenses.length; i++) {
+    arrExpenses[i] = arrExpenses[i].trim();
+}
+
+console.log(arrExpenses);
 console.log('budgetDay: ', budgetDay);
 
 console.log('money: ', money);
