@@ -1,29 +1,36 @@
-let num = 266219;
+'use strict';
+let lang = prompt('Введите ru или en');
 
-//Поменяем тип данных на строку
-let str = num.toString();
+const daysInRussian = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+const daysInEnglish = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-// Получим массив из цифр
-const arr = str.split('');
+// Через конструкцию if
+if (lang === 'ru') {
+    console.log(daysInRussian);
+} else if (lang === 'en') {
+    console.log(daysInEnglish); 
+}
 
-// создадим функцию для вычисления произведения цифр
-const doMultiplication = function(array) {
-    let result = 1;
+// Через конструкцию switch-case
+switch (lang) {
+    case 'ru':
+        console.log(daysInRussian);
+        break;
+    case 'en':
+        console.log(daysInEnglish);
+        break;
+}
 
-    for (let i = 0; i < array.length; i++) {
-        result = result * array[i];
-    }
-    
-    return result;
+// Через объект
+let days = {
+    ru: daysInRussian,
+    en: daysInEnglish
 };
+console.log(days[lang]);
 
-// Запустим функцию и получим ответ
-let result = doMultiplication(arr);
-console.log('result: ', result);
+let namePerson = prompt('Введите имя', 'Артем');
 
-// возводим полученный результат в степень 3
-result = result ** 3;
-console.log('result: ', result);
+namePerson === 'Артем' ? console.log('директор') : 
+namePerson === 'Максим' ? console.log('преподаватель') : console.log('студент');
 
-// выводим на экран первые две цифры полученного числа
-alert(result.toString().substring(0, 2));
+
