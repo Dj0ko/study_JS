@@ -8,8 +8,9 @@ let addExpenses = prompt('Перечислите возможные расход
 let deposit = confirm('Есть ли у вас депозит в банке?'); // узнаем о наличии депозита в банке и получаем true или false
 let mission = 1000000;
 let period = 12;
-let budgetDay = money / 30;
+let budgetDay;
 
+// Создаём функцию для определия типа данных
 const showTypeOf = function (data) {
     console.log(typeof (data));
 };
@@ -17,9 +18,6 @@ showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
 
-console.log(addExpenses.length);
-console.log('Период равен ' + period + ' месяцев');
-console.log('Цель заработать ' + mission + ' рублей');
 //Переведем строку расходов в массив
 let arrExpenses = addExpenses.toLowerCase().split(',');
 
@@ -27,12 +25,8 @@ for (let i = 0; i < arrExpenses.length; i++) {
     arrExpenses[i] = arrExpenses[i].trim();
 }
 
-console.log(arrExpenses);
-console.log('budgetDay: ', budgetDay);
-
-console.log('money: ', money);
-console.log('addExpenses: ', addExpenses);
-console.log('deposit: ', deposit);
+//Выведем возможные расходы
+console.log('Возможные расходы: ', arrExpenses);
 
 // Создадим функцию для создания массива с указанием Статьи расходов и её стоимости, где k - количество статей
 const recordExpenses = function (k) {
@@ -47,8 +41,8 @@ const recordExpenses = function (k) {
     return obj;
 };
 
-let expenseItems = recordExpenses(2); // записываем объект со значениями расходов в переменную expenses
-let expenses = Object.values(expenseItems); // получим значения "ключей" у объекта
+// получим значения "ключей" у объекта, в котором хранятся значения расходов
+let expenses = Object.values(recordExpenses(2)); 
 
 // Создадим функцию, которая суммирует всех обязательных расходов
 const getExpensesMonth = function (array) {
@@ -58,8 +52,9 @@ const getExpensesMonth = function (array) {
         result += +array[i];
     }
     return result;
-
 };
+
+console.log('Сумма всех обязательных расходов: ', getExpensesMonth(expenses));
 
 // Объявляем функцию, которая возвращает все накопления за месяц(доходы - расходы)
 const getAccumulatedMonth = function(income, costs) {
@@ -74,7 +69,8 @@ const getTargetMonth = function() {
     return Math.ceil(mission / accumulatedMonth);
 };
 
-console.log(getTargetMonth());
+//Выведем срок достижения цели
+console.log('Цель будет достигнута через ' + getTargetMonth() + ' месяцев');
 
 // Пересчитаем бюджет на день
 budgetDay = Math.floor(accumulatedMonth / 30);
