@@ -1,17 +1,22 @@
 'use strict';
 
 let money = prompt('Ваш месячный доход?'); // узнаем месячный доход и записываем в переменную money
-let income = 'фриланс'; 
-let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'); /* спрашиваем о 
+let income = 'фриланс';
+let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+/* спрашиваем о 
 расходах и заносим в переменную addExpenses */
 let deposit = confirm('Есть ли у вас депозит в банке?'); // узнаем о наличии депозита в банке и получаем true или false
-let mission = 1000000; 
+let mission = 1000000;
 let period = 12;
 let budgetDay = money / 30;
 
-console.log(typeof money);
-console.log(typeof income);
-console.log(typeof deposit);
+const showTypeOf = function (data) {
+    console.log(typeof (data));
+};
+showTypeOf(money);
+showTypeOf(income);
+showTypeOf(deposit);
+
 console.log(addExpenses.length);
 console.log('Период равен ' + period + ' месяцев');
 console.log('Цель заработать ' + mission + ' рублей');
@@ -45,8 +50,8 @@ const recordExpenses = function (k) {
 let expenseItems = recordExpenses(2); // записываем объект со значениями расходов в переменную expenses
 let expenses = Object.values(expenseItems); // получим значения "ключей" у объекта
 
-// Создадим функцию, которая суммирует все расходы
-const doAddition = function (array) {
+// Создадим функцию, которая суммирует всех обязательных расходов
+const getExpensesMonth = function (array) {
     let result = 0;
 
     for (let i = 0; i < array.length; i++) {
@@ -56,32 +61,41 @@ const doAddition = function (array) {
 
 };
 
-let totalExpenses = doAddition(expenses); //создадим переменную для записи всех расходов
+// Объявляем функцию, которая возвращает все накопления за месяц(доходы - расходы)
+const getAccumulatedMonth = function(income, costs) {
+    return income - costs;
+};
 
-// Вычисляем бюджет на месяц = месячный доход - обязательные траты
-let budgetMonth = money - totalExpenses;
-console.log('Бюджет на месяц: ', budgetMonth);
+// Объявляем переменную и присваиваем ей результат функции
+let accumulatedMonth  = getAccumulatedMonth(money, getExpensesMonth(expenses));
 
-//Вычисляем количество месяцев для достижения цели
-let months = Math.ceil(mission / budgetMonth);
-console.log('Цель будет достигнута за ' + months + ' месяцев');
+//Объявляем функцию, подсчитывающая количество месяцев за который достигнем результат
+const getTargetMonth = function() {
+    return Math.ceil(mission / accumulatedMonth);
+};
+
+console.log(getTargetMonth());
 
 // Пересчитаем бюджет на день
-budgetDay = Math.floor(budgetMonth / 30);
+budgetDay = Math.floor(accumulatedMonth / 30);
 console.log('Бюджет на день: ', budgetDay);
 
 //Записываем конструкцию условий для определения уровня дохода по шкале GloAcademy =)
-switch (!!budgetDay) {
-    case (budgetDay > 1200):
-        console.log('У вас высокий уровень дохода1');
-        break;
-    case ((budgetDay >= 600) && (budgetDay <= 1200)):
-        console.log('У вас средний уровень дохода');
-        break;
-    case ((budgetDay > 0) && (budgetDay < 600)):
-        console.log('К сожалению у вас уровень дохода ниже среднего');
-        break;
-    case (budgetDay <= 0):
-        console.log('Что то пошло не так');
-        break;
-}
+let getStatusIncome = function () {
+    switch (!!budgetDay) {
+        case (budgetDay > 1200):
+            console.log('У вас высокий уровень дохода');
+            break;
+        case ((budgetDay >= 600) && (budgetDay <= 1200)):
+            console.log('У вас средний уровень дохода');
+            break;
+        case ((budgetDay > 0) && (budgetDay < 600)):
+            console.log('К сожалению у вас уровень дохода ниже среднего');
+            break;
+        case (budgetDay <= 0):
+            console.log('Что то пошло не так');
+            break;
+    }
+};
+
+getStatusIncome();
