@@ -77,16 +77,16 @@ const budgetDay = Math.floor(accumulatedMonth / 30);
 console.log('Бюджет на день: ', budgetDay);
 
 //Записываем конструкцию условий для определения уровня дохода по шкале GloAcademy =)
-const getStatusIncome = function () {
-    if (budgetDay > 1200) {
+const getStatusIncome = function (data) {
+    if (data > 1200) {
         return 'У вас высокий уровень дохода';
-    } else if ((budgetDay >= 600) && (budgetDay <= 1200)) {
+    } else if ((data >= 600) && (data <= 1200)) {
         return 'У вас средний уровень дохода';
-    } else if ((budgetDay >= 0) && (budgetDay < 600)) {
+    } else if ((data >= 0) && (data < 600)) {
         return 'К сожалению у вас уровень дохода ниже среднего';
     } else {
         return 'Что то пошло не так';
     }
 };
 
-console.log(getStatusIncome());
+console.log(getStatusIncome(budgetDay));
