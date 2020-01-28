@@ -82,7 +82,7 @@ const getStatusIncome = function () {
         return 'У вас высокий уровень дохода';
     } else if ((budgetDay >= 600) && (budgetDay <= 1200)) {
         return 'У вас средний уровень дохода';
-    } else if ((budgetDay > 0) && (budgetDay < 600)) {
+    } else if ((budgetDay >= 0) && (budgetDay < 600)) {
         return 'К сожалению у вас уровень дохода ниже среднего';
     } else {
         return 'Что то пошло не так';
