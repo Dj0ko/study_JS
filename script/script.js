@@ -1,35 +1,19 @@
 'use strict';
-let lang = prompt('Введите ru или en');
+let str = '               Привет, как дела? У меня всё хорошо, надеюсь и у вас тоже всё здорово!'           ;
+let num = 123;
+let arr = [];
 
-const daysInRussian = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
-const daysInEnglish = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-// Через конструкцию if
-if (lang === 'ru') {
-    console.log(daysInRussian);
-} else if (lang === 'en') {
-    console.log(daysInEnglish); 
-}
-
-// Через конструкцию switch-case
-switch (lang) {
-    case 'ru':
-        console.log(daysInRussian);
-        break;
-    case 'en':
-        console.log(daysInEnglish);
-        break;
-}
-
-// Через объект
-let days = {
-    ru: daysInRussian,
-    en: daysInEnglish
+const a = function(data) {
+    if (typeof data !== 'string') {
+        return 'Введён не строчный тип данных';
+    } else {
+        return data.trim().substr(0, 30) + '...';
+    }
 };
-console.log(days[lang]);
 
-let namePerson = prompt('Введите имя', 'Артем');
+console.log(a(str));
+console.log(a(num));
+console.log(a(arr));
 
-console.log(namePerson === 'Артем' ? 'директор' : namePerson === 'Максим' ? 'преподаватель' : 'студент');
 
 
