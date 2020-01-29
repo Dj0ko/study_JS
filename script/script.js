@@ -12,3 +12,20 @@ for (let i = 0; i < arr.length; i++) {
 }
 
 console.log(newarr);
+
+// Получаем простые числа от 1 до 100
+for (let i = 1; i <= 100; i++) {
+    var num = 0;
+
+    for (let j = 1; j <= i; j++) {
+        if ((i % j) !== 0) {
+            continue;
+        } else {
+            num +=1 ;
+        } 
+    }
+
+    if (num === 2) {
+        console.log('Простоe число: ' + i + '. Делители этого числа: 1 и ' + i);
+    }
+}
