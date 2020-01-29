@@ -1,20 +1,14 @@
 'use strict';
-let str = '               Привет, как дела? У меня всё хорошо, надеюсь и у вас тоже всё здорово!';
-let str2 = 'привет';
-let num = 123;
-let arr = [];
 
-const a = function (data) {
-    if (typeof data !== 'string') {
-        return 'Введён не строчный тип данных';
-    } else if (data.length < 30) {
-        return data;
-    } else {
-        return data.trim().substr(0, 30) + '...';
+const arr = ['123', '234', '345', '456', '23234', '45747', '7567'];
+console.log('arr: ', arr);
+
+// Переберем массив и запишем в новый массив строки, которые начинаются с 2 или 4.
+let newarr = [];
+for (let i = 0; i < arr.length; i++) {
+    if (arr[i].startsWith(2) || arr[i].startsWith(4)) {
+        newarr.push(arr[i]);
     }
-};
+}
 
-console.log(a(str));
-console.log(a(num));
-console.log(a(arr));
-console.log(a(str2));
+console.log(newarr);
