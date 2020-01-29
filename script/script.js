@@ -1,12 +1,28 @@
 'use strict';
+/*создаем функцию, для проверки что введено число, где 
+parseFloat - привидение к числу с плавающей запятой
+isFinite - проверка для определения является ли число конечным */
+const isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+};
 
-const money = +prompt('Ваш месячный доход?'); // узнаем месячный доход и записываем в переменную money
+// const money = +prompt('Ваш месячный доход?'); // узнаем месячный доход и записываем в переменную money
+let money;
 const income = 'фриланс';
 const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
 /* спрашиваем о 
 расходах и заносим в переменную addExpenses */
 const deposit = confirm('Есть ли у вас депозит в банке?'); // узнаем о наличии депозита в банке и получаем true или false
 const mission = 1000000;
+
+//Создаем функцию для ввода месячного дохода
+const start = function() {
+    do {
+        money = prompt('Ваш месячный доход?');
+    } while(!isNumber(money));
+};
+
+start();
 
 // Создаём функцию для определия типа данных
 const showTypeOf = function (data) {
