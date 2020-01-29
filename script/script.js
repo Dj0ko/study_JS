@@ -48,7 +48,10 @@ const recordExpenses = function (k) {
 
     for (let i = 1; i <= k; i++) {
         let expenses = prompt('Введите обязательную статью расходов?');
-        obj[expenses] = prompt('Во сколько это обойдется??');
+        //Введем проверку чтоб вводимое значение было типом данных число
+        while (!isNumber(obj[expenses])) {
+            obj[expenses] = prompt('Во сколько это обойдется??', "Введите число");
+        }
     }
     return obj;
 };
@@ -78,8 +81,8 @@ const accumulatedMonth  = getAccumulatedMonth(money, getExpensesMonth(expenses))
 
 //Объявляем функцию, подсчитывающая количество месяцев за который достигнем результат
 const getTargetMonth = function() {
-    if (accumulatedMonth === 0 || accumulatedMonth < 0) {
-        return 'цель не будет достигнута пока не увеличите бюджет!';
+    if (accumulatedMonth < 0) {
+        return 'Цель не будет достигнута';
     } else {
         return Math.ceil(mission / accumulatedMonth);
     }
