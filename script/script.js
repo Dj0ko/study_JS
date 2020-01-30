@@ -23,7 +23,7 @@ function changeAttempts(n) {
 //функция для угадывания числа
 function startGame() {
     let randomValue = getRandom(1, 100); //Задаем случайное число в диапозоне от 1 до 100
-    let attempts = 1; //задаём начальное количество попыток
+    let attempts = 10; //задаём начальное количество попыток
 
 
     function askQuestion() {
@@ -32,7 +32,6 @@ function startGame() {
         attempts = changeAttempts(attempts);
         // Сравниваем введённое значение с загаданным 
         if (setValue > randomValue) {
-            // changeAttempts(attempts);
             alert('Загаданное число меньше, осталось попыток: ' + attempts);
             askQuestion();
         } else if (setValue < randomValue && setValue > 0) {
@@ -47,9 +46,7 @@ function startGame() {
             // Если угадали загаданное значение, то предлагаем сыграть еще или выйти из программы
             let victoriusMessage = confirm('Победа! Хотите сыграть снова?');
             if (victoriusMessage) {
-                randomValue = getRandom(1, 100);
-                attempts = 10;
-                askQuestion();
+                startGame();
             } else {
                 alert('До скорых встреч');
             }
