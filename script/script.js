@@ -1,6 +1,6 @@
 'use strict';
 /*создаем функцию, для проверки что введено число, где 
-parseFloat - привидение к числу с плавающей запятой
+parseFloat - приведение к числу с плавающей запятой
 isFinite - проверка для определения является ли число конечным */
 const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
