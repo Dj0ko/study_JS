@@ -24,7 +24,7 @@ for (let i = 2; i <= count; i++) {
 }
 
 let divider = 2; // задаём начальное значение делителя
-let maxDivader = Math.sqrt(count); //получаем максимально возвожный делитель
+const maxDivader = Math.sqrt(count); //получаем максимально возвожный делитель
 // перебираем возможные делители от 2 до sqrt(n)
 do {
   let i = 0;
