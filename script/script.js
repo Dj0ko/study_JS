@@ -14,26 +14,26 @@ for (let i = 0; i < arr.length; i++) {
 console.log(newarr);
 
 // // Получаем простые числа от 1 до 100
-const count = 20; //задаём количество чисел
+const count = 100; //задаём количество чисел
 
 //создаем массив и заполняем его значениями
 let arr1 = [];
 
-for (var i = 2; i <= count; i++) {
+for (let i = 2; i <= count; i++) {
   arr1[i] = i;
 }
-console.log(arr1);
 
 let divider = 2; // задаём начальное значение делителя
+let maxDivader = Math.sqrt(count); //получаем максимально возвожный делитель
 // перебираем возможные делители от 2 до sqrt(n)
 do {
+  let i = 0;
   //всем числам , которые делятся на делитель даём значение false
   for (i = 2 * divider; i <= count; i += divider) {
     arr1[i] = false;
   }
-  console.log(arr1);
   //берём следующее число , если оно оказывается без флага false , то принимаем его за делитель
-  for (i = divider + 1; i <= Math.sqrt(count); i++) {
+  for (i = divider + 1; i <= maxDivader; i++) {
     if (arr1[i]) {
         break;
     } else {
@@ -41,8 +41,8 @@ do {
     }
   }
   divider = i;
-} while (divider < Math.sqrt(count)); /*проверка, что делитель не может быть больше 
-квадратного корня от максимально заданного числа - так получаем максимальный делитель*/
+} while (divider < maxDivader); /*проверка, что делитель не может быть больше 
+максимально возможного делителя*/
 
 //выводим все простые числа
 for (let i = 0; i < arr1.length; i++) {
