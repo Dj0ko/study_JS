@@ -8,17 +8,17 @@ const isNumber = function (n) {
 
 //Создаем функцию для ввода месячного дохода
 let money;
+
 function start() {
   do {
     money = prompt('Ваш месячный доход?');
   } while (!isNumber(money));
+  return money;
 }
-
-start();
-
+// debugger;
 //Создадим объект с исходными переменными
-let appData = {
-  budget: +money,
+const appData = {
+  budget: 0,
   budgetDay: 0,
   budgetMonth: 0,
   expensesMonth: 0,
@@ -29,19 +29,61 @@ let appData = {
   deposit: false,
   mission: 1000000,
   period: 12,
-  asking: function() {
-    //спрашиваем о расходах и заносим в переменную addExpenses
+  statusIncome: 0,
+  asking: function () {
+    //узнаем месячный доход
+    appData.budget = start();
+    //спрашиваем о возможных расходах
     const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
     appData.addExpenses = fixStrings(addExpenses);
-    appData.deposit = confirm('Есть ли у вас депозит в банке?'); /* узнаем о наличии депозита в банке
-    и получаем true или false*/
+    //узнаем о наличии депозита в банке и получаем true или false
+    appData.deposit = confirm('Есть ли у вас депозит в банке?');
+    //спрашиваем об обязательных расходах 
     appData.expenses = recordExpenses(2);
   }
 };
 
 appData.asking();
 
-// Создадим функцию для приведения в нижний регист и разбития строк в массив, с удалением лишних пробелов
+//Функцию getExpensesMonth делаем методом объекта addData
+appData.expensesMonth = getExpensesMonth;
+// Записываем полученное значение в объект
+appData.expensesMonth = appData.expensesMonth(appData.expenses);
+
+console.log(appData.expensesMonth);
+//Функцию getBudget делаем методом объекта addData
+appData.budgetMonth = getBudget;
+// Записываем полученное значение в объект
+
+appData.budgetMonth();
+// appData.budgetMonth = appData.budgetMonth(appData.budget, appData.expensesMonth);
+
+// console.log('appData.budgetMonth: ', appData.budgetMonth);
+
+// appData.budgetDay = Math.floor(appData.budgetMonth / 30);
+
+
+//Функцию getTargetMonth делаем методом объекта addData
+appData.period = getTargetMonth;
+appData.period();
+
+//Функцию getStatusIncome делаем методом объекта addData
+appData.statusIncome = getStatusIncome;
+appData.statusIncome();
+
+// Пересчитаем бюджет на день
+appData.budgetDay = Math.floor(appData.budgetMonth / 30);
+console.log(appData);
+// console.log(appData.expenses);
+// console.log(appData.period);
+// console.log(appData.statusIncome);
+
+// for (let key in appData) {
+//   console.log('Наша программа включает в себя данные: ' + key + ' ' + appData[key]);
+// }
+
+
+// Функция для приведения в нижний регист и разбития строк в массив, с удалением лишних пробелов
 function fixStrings(array) {
   const arr = array.toLowerCase().split(',');
   for (let i = 0; i < arr.length; i++) {
@@ -51,12 +93,12 @@ function fixStrings(array) {
   return arr;
 }
 
-// Создадим функцию для создания массива с указанием Статьи расходов и её стоимости, где k - количество статей
+// Функция для создания массива с указанием Статьи расходов и её стоимости, где k - количество статей
 function recordExpenses(k) {
   let obj = {};
 
   for (let i = 1; i <= k; i++) {
-    let expenses = prompt('Введите обязательную статью расходов?');
+    const expenses = prompt('Введите обязательную статью расходов?');
     //Введем проверку чтоб вводимое значение было типом данных число
     while (!isNumber(obj[expenses])) {
       obj[expenses] = prompt('Во сколько это обойдется??', "Введите число");
@@ -65,7 +107,7 @@ function recordExpenses(k) {
   return obj;
 }
 
-// Создадим функцию, которая суммирует все обязательные расходы
+// Функция, суммирующая все обязательные расходы
 function getExpensesMonth(obj) {
   let result = 0;
 
@@ -75,18 +117,17 @@ function getExpensesMonth(obj) {
   return result;
 }
 
-// Делаем функцию методом объекта appData
-appData.expensesMonth = getExpensesMonth(appData.expenses);
+// Функция, возвращающая все накопления за месяц(доходы - расходы)
+// function getBudget(income, costs) {
+//   return income - costs;
+// }
 
-// Объявляем функцию, которая возвращает все накопления за месяц(доходы - расходы)
-function getBudget(income, costs) {
-  return income - costs;
+function getBudget() {
+  appData.budgetMonth = appData.budget - appData.expensesMonth;
+  appData.budgetDay = Math.floor(appData.budgetMonth / 30);
 }
 
-//Делаем функцию методом объекта appData
-appData.budgetMonth = getBudget(appData.budget, appData.expensesMonth);
-
-//Объявляем функцию, подсчитывающая количество месяцев за который достигнем результат
+//Функция, подсчитывающая количество месяцев за который достигнем результат
 function getTargetMonth() {
   if (appData.budgetMonth < 0) {
     return 'Цель не будет достигнута';
@@ -95,13 +136,7 @@ function getTargetMonth() {
   }
 }
 
-//Делаем функцию методом объекта appData
-appData.period = getTargetMonth();
-
-// Пересчитаем бюджет на день
-appData.budgetDay = Math.floor(appData.budgetMonth / 30);
-
-//Записываем конструкцию условий для определения уровня дохода по шкале GloAcademy =)
+//Функция для определения уровня дохода по шкале GloAcademy =)
 function getStatusIncome(data) {
   if (data > 1200) {
     return 'У вас высокий уровень дохода';
@@ -114,13 +149,10 @@ function getStatusIncome(data) {
   }
 }
 
-//Делаем функцию методом объекта appData
-appData.statusIncome = getStatusIncome(appData.budgetDay);
+// let obj = {
+//   a: function() {
+//     return 2*2;
+//   }
+// };
 
-console.log(appData.expenses);
-console.log(appData.period);
-console.log(appData.statusIncome);
-
-for (let key in appData) {
-  console.log('Наша программа включает в себя данные: ' + key + ' ' + appData[key]);
-}
+// console.log(obj.a());
