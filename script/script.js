@@ -50,39 +50,31 @@ appData.expensesMonth = getExpensesMonth;
 // Записываем полученное значение в объект
 appData.expensesMonth = appData.expensesMonth(appData.expenses);
 
-console.log(appData.expensesMonth);
 //Функцию getBudget делаем методом объекта addData
 appData.budgetMonth = getBudget;
-// Записываем полученное значение в объект
-
+// Записываем полученные значение в объект
 appData.budgetMonth();
-// appData.budgetMonth = appData.budgetMonth(appData.budget, appData.expensesMonth);
-
-// console.log('appData.budgetMonth: ', appData.budgetMonth);
-
-// appData.budgetDay = Math.floor(appData.budgetMonth / 30);
-
 
 //Функцию getTargetMonth делаем методом объекта addData
 appData.period = getTargetMonth;
-appData.period();
+// Записываем полученные значение в объект
+appData.period = appData.period();
 
 //Функцию getStatusIncome делаем методом объекта addData
 appData.statusIncome = getStatusIncome;
-appData.statusIncome();
+// Записываем полученные значение в объект
+appData.statusIncome = appData.statusIncome(appData.budgetDay);
 
-// Пересчитаем бюджет на день
-appData.budgetDay = Math.floor(appData.budgetMonth / 30);
-console.log(appData);
-// console.log(appData.expenses);
-// console.log(appData.period);
-// console.log(appData.statusIncome);
+console.log(appData.expenses);
+console.log(appData.period);
+console.log(appData.statusIncome);
 
-// for (let key in appData) {
-//   console.log('Наша программа включает в себя данные: ' + key + ' ' + appData[key]);
-// }
+console.log('Наша программа включает в себя данные:');
+for (let key in appData) {
+  console.log('Свойство: ' + key + ', значение свойства: ' + appData[key]);
+}
 
-
+/*----------------------------------------------------------------------------------------------------------------*/
 // Функция для приведения в нижний регист и разбития строк в массив, с удалением лишних пробелов
 function fixStrings(array) {
   const arr = array.toLowerCase().split(',');
@@ -117,11 +109,7 @@ function getExpensesMonth(obj) {
   return result;
 }
 
-// Функция, возвращающая все накопления за месяц(доходы - расходы)
-// function getBudget(income, costs) {
-//   return income - costs;
-// }
-
+//Функция, считающая месячный бюджет и дневной
 function getBudget() {
   appData.budgetMonth = appData.budget - appData.expensesMonth;
   appData.budgetDay = Math.floor(appData.budgetMonth / 30);
@@ -148,11 +136,3 @@ function getStatusIncome(data) {
     return 'Что то пошло не так';
   }
 }
-
-// let obj = {
-//   a: function() {
-//     return 2*2;
-//   }
-// };
-
-// console.log(obj.a());
