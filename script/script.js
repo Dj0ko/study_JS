@@ -26,16 +26,29 @@ const appData = {
     expenses: {},
     addExpenses: [],
     deposit: false,
+    percentDeposit: 0,
+    moneyDeposit: 0,
     mission: 1000000,
     period: 12,
     statusIncome: 0,
     asking: function () {
         //узнаем месячный доход
         appData.budget = start();
+        
         //узнаем о дополнительном заработке
-        if (true) {
+        if (confirm('Eсть ли у вас дополнительный заработок?')) {
+            
             let itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Таксую');
+            /*Введём проверку чтоб вводимое значение было типом строка, строчка была не пустой
+            и не была введена "подсказка"*/
+            while (isNumber(itemIncome) || itemIncome.trim() === '' || itemIncome === 'Введите текст') {
+                itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Введите текст');
+            }
             appData.income[itemIncome] = prompt('Сколько в месяц зарабатываете на этом?', 10000);
+            //Введем проверку чтоб вводимое значение было типом число
+            while (!isNumber(appData.income[itemIncome])) {
+                appData.income[itemIncome] = prompt('Сколько в месяц зарабатываете на этом?', 'Введите число');
+            }
         }
         //спрашиваем о возможных расходах
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
@@ -51,7 +64,12 @@ const appData = {
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
         //спрашиваем об обязательных расходах 
         for (let i = 1; i <= 2; i++) {
-            const itemExpenses = prompt('Введите обязательную статью расходов?');
+            let itemExpenses = prompt('Введите обязательную статью расходов?');
+            /*Введём проверку чтоб вводимое значение было типом строка, строчка была не пустой
+            и не была введена "подсказка"*/
+            while (isNumber(itemExpenses) || itemExpenses.trim() === ''|| itemExpenses === 'Введите текст') {
+                itemExpenses = prompt('Введите обязательную статью расходов?', 'Введите текст');
+            }
             //Введем проверку чтоб вводимое значение было типом данных число
             while (!isNumber(appData.expenses[itemExpenses])) {
                 appData.expenses[itemExpenses] = prompt('Во сколько это обойдется??', "Введите число");
@@ -84,18 +102,30 @@ const appData = {
         } else {
             return 'Что то пошло не так';
         }
+    },
+    getInfoDeposit: function () {
+        if (appData.deposit) {
+            appData.percentDeposit = prompt('Какой годовой процент?', 10);
+            while (!isNumber(appData.percentDeposit)) {
+                appData.percentDeposit = prompt('Какой годовой процент?', 'Введите число');
+            }
+            appData.moneyDeposit = prompt('Какая сумма заложена?', 10000);
+            while (!isNumber(appData.moneyDeposit)) {
+                appData.moneyDeposit = prompt('Какой годовой процент?', 'Введите число');
+            }
+        }
+    },
+    calcSavedMoney: function() {
+        return appData.budgetMonth * appData.period;
     }
 };
 
 appData.asking();
-appData.getExpensesMonth();
-appData.getBudget();
 
-console.log('Расходы за месяц: ' + appData.expensesMonth);
-console.log('За какой период будет достигнута цель (в месяцах): ' + appData.getTargetMonth());
-console.log('Уровень дохода: ' + appData.getStatusIncome());
-
-console.log('Наша программа включает в себя данные:');
-for (let key in appData) {
-    console.log('Свойство: ' + key + ', значение свойства: ' + appData[key]);
+console.log(appData.addExpenses);
+for (let item in appData.addExpenses) {
+    item[0].toUpperCase() + item.slice(1);
 }
+
+console.log(appData.addExpenses.join(', '));
+
