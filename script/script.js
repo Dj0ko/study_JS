@@ -122,10 +122,9 @@ const appData = {
 
 appData.asking();
 
-console.log(appData.addExpenses);
-for (let item in appData.addExpenses) {
-    item[0].toUpperCase() + item.slice(1);
+for (let i = 0; i < appData.addExpenses.length; i++) {
+    appData.addExpenses[i] = appData.addExpenses[i][0].toUpperCase() + appData.addExpenses[i].substring(1);
 }
-
 console.log(appData.addExpenses.join(', '));
+
 
