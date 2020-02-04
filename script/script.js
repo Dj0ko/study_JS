@@ -34,9 +34,13 @@ const appData = {
         appData.budget = start();
         //спрашиваем о возможных расходах
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-        appData.addExpenses = addExpenses.toLowerCase().split(',');
-        for (let i = 0; i < appData.addExpenses.length; i++) {
-            appData.addExpenses[i] = appData.addExpenses[i].trim();
+        if (addExpenses) {
+            appData.addExpenses = addExpenses.toLowerCase().split(',');
+            for (let i = 0; i < appData.addExpenses.length; i++) {
+                appData.addExpenses[i] = appData.addExpenses[i].trim();
+            }
+        } else {
+            addExpenses = '';
         }
         // узнаем о наличии депозита в банке и получаем true или false
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
