@@ -81,7 +81,6 @@ const appData = {
 appData.asking();
 appData.getExpensesMonth();
 appData.getBudget();
-console.log(appData);
 
 console.log('Расходы за месяц: ' + appData.expensesMonth);
 console.log('За какой период будет достигнута цель (в месяцах): ' + appData.getTargetMonth());
@@ -91,18 +90,3 @@ console.log('Наша программа включает в себя данны
 for (let key in appData) {
     console.log('Свойство: ' + key + ', значение свойства: ' + appData[key]);
 }
-
-// /*----------------------------------------------------------------------------------------------------------------*/
-
-// //Функция для определения уровня дохода по шкале GloAcademy =)
-// function getStatusIncome(data) {
-//     if (data > 1200) {
-//         return 'У вас высокий уровень дохода';
-//     } else if ((data >= 600) && (data <= 1200)) {
-//         return 'У вас средний уровень дохода';
-//     } else if ((data >= 0) && (data < 600)) {
-//         return 'К сожалению у вас уровень дохода ниже среднего';
-//     } else {
-//         return 'Что то пошло не так';
-//     }
-// }
