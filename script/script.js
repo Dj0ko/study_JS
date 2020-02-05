@@ -17,38 +17,45 @@ function start() {
 // debugger;
 //Создадим объект с исходными переменными
 const appData = {
-    budget: 0,
-    budgetDay: 0,
-    budgetMonth: 0,
-    expensesMonth: 0,
-    income: {},
-    addIncome: [],
-    expenses: {},
-    addExpenses: [],
-    deposit: false,
-    percentDeposit: 0,
-    moneyDeposit: 0,
-    mission: 1000000,
-    period: 12,
-    statusIncome: 0,
-    asking: function () {
-        //узнаем месячный доход
-        appData.budget = start();
+        budget: 0,
+        budgetDay: 0,
+        budgetMonth: 0,
+        expensesMonth: 0,
+        income: {},
+        addIncome: [],
+        expenses: {},
+        addExpenses: [],
+        deposit: false,
+        percentDeposit: 0,
+        moneyDeposit: 0,
+        mission: 1000000,
+        period: 12,
+        statusIncome: 0,
+        asking: function () {
+            //узнаем месячный доход
+            appData.budget = start();
 
-        //узнаем о дополнительном заработке
-        if (confirm('Eсть ли у вас дополнительный заработок?')) {
+            //узнаем о дополнительном заработке
+            if (confirm('Eсть ли у вас дополнительный заработок?')) {
+                let itemIncome;
+                do {
+                    itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Введите текст');
+                    //Если отмена то переходим к вопросу о возможных расходах
+                    if (!itemIncome) {
+                        break;
+                    }
+                } while (isNumber(itemIncome) || itemIncome.trim() === '' || itemIncome === 'Введите текст');
 
-            let itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Таксую');
-            /*Введём проверку чтоб вводимое значение было типом строка, строчка была не пустой
-            и не была введена "подсказка"*/
-            while (isNumber(itemIncome) || itemIncome.trim() === '' || itemIncome === 'Введите текст') {
-                itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Введите текст');
-            }
-            appData.income[itemIncome] = prompt('Сколько в месяц зарабатываете на этом?', 10000);
-            //Введем проверку чтоб вводимое значение было типом число
-            while (!isNumber(appData.income[itemIncome])) {
-                appData.income[itemIncome] = prompt('Сколько в месяц зарабатываете на этом?', 'Введите число');
-            }
+                if (itemIncome) {
+                do {
+                    appData.income[itemIncome] = prompt('Сколько в месяц зарабатываете на этом?', 'Введите число');
+                    //Если отмена то переходим к вопросу о возможных расходах
+                    if (!appData.income[itemIncome]) {
+                        appData.income = {};
+                        break;
+                    }
+                } while (!isNumber(appData.income[itemIncome]));
+                } 
         }
         //спрашиваем о возможных расходах
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
@@ -67,7 +74,7 @@ const appData = {
             let itemExpenses = prompt('Введите обязательную статью расходов?');
             /*Введём проверку чтоб вводимое значение было типом строка, строчка была не пустой
             и не была введена "подсказка"*/
-            while (isNumber(itemExpenses) || itemExpenses.trim() === '' || itemExpenses === 'Введите текст') {
+            while (isNumber(itemExpenses) || itemExpenses === null || itemExpenses.trim() === '' || itemExpenses === 'Введите текст') {
                 itemExpenses = prompt('Введите обязательную статью расходов?', 'Введите текст');
             }
             //Введем проверку чтоб вводимое значение было типом данных число
