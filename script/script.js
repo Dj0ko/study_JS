@@ -10,7 +10,7 @@ console.log('currentDay: ', currentDay);
 
 //Перебираем элементы массива
 for (let i = 0; i < week.length ; i++){
-  if (i === (currentDay)) {
+  if (i === (currentDay - 1)) {
     blockWeek.innerHTML += '<p><b>' + week[i] + '</b></p>';
   } else if (i < 5) {
     blockWeek.innerHTML += '<p>' + week[i] + '</p>';
