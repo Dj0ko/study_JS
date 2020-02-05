@@ -112,13 +112,23 @@ const appData = {
     },
     getInfoDeposit: function () {
         if (appData.deposit) {
-            appData.percentDeposit = prompt('Какой годовой процент?', 10);
-            while (!isNumber(appData.percentDeposit)) {
+            do {
                 appData.percentDeposit = prompt('Какой годовой процент?', 'Введите число');
-            }
-            appData.moneyDeposit = prompt('Какая сумма заложена?', 10000);
-            while (!isNumber(appData.moneyDeposit)) {
-                appData.moneyDeposit = prompt('Какой годовой процент?', 'Введите число');
+                if (!appData.percentDeposit) {
+                    appData.percentDeposit = 0;
+                    break;
+                }
+            } while (!isNumber(appData.percentDeposit));
+            
+            if (appData.percentDeposit) {
+                do {
+                    appData.moneyDeposit = prompt('Какая сумма заложена?', 'Введите число'); 
+                    if (!appData.moneyDeposit) {
+                        appData.percentDeposit = 0;
+                        appData.moneyDeposit = 0;
+                        break;
+                    }
+                } while (!isNumber(appData.moneyDeposit));
             }
         }
     },
@@ -128,6 +138,7 @@ const appData = {
 };
 
 appData.asking();
+appData.getInfoDeposit();
 console.log(appData);
 
 for (let i = 0; i < appData.addExpenses.length; i++) {
