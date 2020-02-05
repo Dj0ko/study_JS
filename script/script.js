@@ -34,10 +34,10 @@ const appData = {
     asking: function () {
         //узнаем месячный доход
         appData.budget = start();
-        
+
         //узнаем о дополнительном заработке
         if (confirm('Eсть ли у вас дополнительный заработок?')) {
-            
+
             let itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Таксую');
             /*Введём проверку чтоб вводимое значение было типом строка, строчка была не пустой
             и не была введена "подсказка"*/
@@ -67,7 +67,7 @@ const appData = {
             let itemExpenses = prompt('Введите обязательную статью расходов?');
             /*Введём проверку чтоб вводимое значение было типом строка, строчка была не пустой
             и не была введена "подсказка"*/
-            while (isNumber(itemExpenses) || itemExpenses.trim() === ''|| itemExpenses === 'Введите текст') {
+            while (isNumber(itemExpenses) || itemExpenses.trim() === '' || itemExpenses === 'Введите текст') {
                 itemExpenses = prompt('Введите обязательную статью расходов?', 'Введите текст');
             }
             //Введем проверку чтоб вводимое значение было типом данных число
@@ -115,16 +115,19 @@ const appData = {
             }
         }
     },
-    calcSavedMoney: function() {
+    calcSavedMoney: function () {
         return appData.budgetMonth * appData.period;
     }
 };
 
 appData.asking();
+console.log(appData);
 
 for (let i = 0; i < appData.addExpenses.length; i++) {
-    appData.addExpenses[i] = appData.addExpenses[i][0].toUpperCase() + appData.addExpenses[i].substring(1);
+    if (appData.addExpenses[i]) {
+        appData.addExpenses[i] = appData.addExpenses[i][0].toUpperCase() + appData.addExpenses[i].substring(1);
+    } else {
+        appData.addExpenses = [];
+    }
 }
 console.log(appData.addExpenses.join(', '));
-
-
