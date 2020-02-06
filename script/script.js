@@ -14,7 +14,7 @@ function start() {
     } while (!isNumber(money));
     return money;
 }
-// debugger;
+
 //Создадим объект с исходными переменными
 const appData = {
     budget: 0,
@@ -26,12 +26,37 @@ const appData = {
     expenses: {},
     addExpenses: [],
     deposit: false,
+    percentDeposit: 0,
+    moneyDeposit: 0,
     mission: 1000000,
     period: 12,
     statusIncome: 0,
     asking: function () {
         //узнаем месячный доход
         appData.budget = start();
+
+        //узнаем о дополнительном заработке
+        if (confirm('Eсть ли у вас дополнительный заработок?')) {
+            let itemIncome;
+            do {
+                itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Введите текст');
+                //Если отмена то переходим к вопросу о возможных расходах
+                if (!itemIncome) {
+                    break;
+                }
+            } while (isNumber(itemIncome) || itemIncome.trim() === '' || itemIncome === 'Введите текст');
+
+            if (itemIncome) {
+                do {
+                    appData.income[itemIncome] = prompt('Сколько в месяц зарабатываете на этом?', 'Введите число');
+                    //Если отмена то переходим к вопросу о возможных расходах
+                    if (!appData.income[itemIncome]) {
+                        appData.income = {};
+                        break;
+                    }
+                } while (!isNumber(appData.income[itemIncome]));
+            }
+        }
         //спрашиваем о возможных расходах
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
         if (addExpenses) {
@@ -46,7 +71,12 @@ const appData = {
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
         //спрашиваем об обязательных расходах 
         for (let i = 1; i <= 2; i++) {
-            const itemExpenses = prompt('Введите обязательную статью расходов?');
+            let itemExpenses = prompt('Введите обязательную статью расходов?');
+            /*Введём проверку чтоб вводимое значение было типом строка, строчка была не пустой
+            и не была введена "подсказка"*/
+            while (isNumber(itemExpenses) || itemExpenses === null || itemExpenses.trim() === '' || itemExpenses === 'Введите текст') {
+                itemExpenses = prompt('Введите обязательную статью расходов?', 'Введите текст');
+            }
             //Введем проверку чтоб вводимое значение было типом данных число
             while (!isNumber(appData.expenses[itemExpenses])) {
                 appData.expenses[itemExpenses] = prompt('Во сколько это обойдется??', "Введите число");
@@ -79,12 +109,38 @@ const appData = {
         } else {
             return 'Что то пошло не так';
         }
+    },
+    getInfoDeposit: function () {
+        if (appData.deposit) {
+            do {
+                appData.percentDeposit = prompt('Какой годовой процент?', 'Введите число');
+                if (!appData.percentDeposit) {
+                    appData.percentDeposit = 0;
+                    break;
+                }
+            } while (!isNumber(appData.percentDeposit));
+
+            if (appData.percentDeposit) {
+                do {
+                    appData.moneyDeposit = prompt('Какая сумма заложена?', 'Введите число');
+                    if (!appData.moneyDeposit) {
+                        appData.percentDeposit = 0;
+                        appData.moneyDeposit = 0;
+                        break;
+                    }
+                } while (!isNumber(appData.moneyDeposit));
+            }
+        }
+    },
+    calcSavedMoney: function () {
+        return appData.budgetMonth * appData.period;
     }
 };
 
 appData.asking();
 appData.getExpensesMonth();
 appData.getBudget();
+appData.getInfoDeposit();
 
 console.log('Расходы за месяц: ' + appData.expensesMonth);
 console.log('За какой период будет достигнута цель (в месяцах): ' + appData.getTargetMonth());
@@ -94,3 +150,12 @@ console.log('Наша программа включает в себя данны
 for (let key in appData) {
     console.log('Свойство: ' + key + ', значение свойства: ' + appData[key]);
 }
+
+for (let i = 0; i < appData.addExpenses.length; i++) {
+    if (appData.addExpenses[i]) {
+        appData.addExpenses[i] = appData.addExpenses[i][0].toUpperCase() + appData.addExpenses[i].substring(1);
+    } else {
+        appData.addExpenses = [];
+    }
+}
+console.log(appData.addExpenses.join(', '));
