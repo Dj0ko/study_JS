@@ -28,12 +28,10 @@ let calculate = document.getElementById('start'), //получаем кнопк�
 	targetMonthValue = fieldsOutput[6],
 	//получаем поле ввода "Месячный доход"
 	salaryAmount = document.querySelector('.salary-amount'),
-	//получаем поле наименования "Дополнительный доход"
-	incomeTitle = document.querySelector('.income-title'),
-	//получаем поле суммы "Дополнительный доход"
-	// incomeAmount = document.querySelector('.income-amount'),
-	//получаем поле наименования "Обязательные расходы"
-	expensesTitle = document.querySelector('.expenses-title'),
+	//получаем поля "Дополнительный доход"
+	incomeItems = document.querySelectorAll('.income-items'),
+	// //получаем поле наименования "Дополнительный доход"
+	// incomeTitle = document.querySelector('.income-title'),
 	//получаем поле суммы "Обязательные расходы"
 	expensesItems = document.querySelectorAll('.expenses-items'),
 	//получаем поле ввода "Возможные расходы"
@@ -44,28 +42,27 @@ let calculate = document.getElementById('start'), //получаем кнопк�
 	periodSelect = document.querySelector('.period-select'),
 	//получаем поля дополнительных расходов
 	incomeItem = document.querySelectorAll('.income-items');
-
-/*Выводим полученные значения в консоль
-console.log('calculate: ', calculate);
-console.log('plusIncome: ', plusIncome);
-console.log('plusExpenses: ', plusExpenses);
-console.log('checkBoxDeposit: ', checkBoxDeposit);
-console.log('fieldAddIncome: ', fieldAddIncome);
-console.log('budgetMonthValue: ', budgetMonthValue);
-console.log('budgetDayValue: ', budgetDayValue);
-console.log('expensesMonthValue: ', expensesMonthValue);
-console.log('additionalIncomeValue: ', additionalIncomeValue);
-console.log('additionalExpensesValue: ', additionalExpensesValue);
-console.log('incomePeriodValue: ', incomePeriodValue);
-console.log('targetMonthValue: ', targetMonthValue);
-console.log('salaryAmount: ', salaryAmount);
-console.log('incomeTitle: ', incomeTitle);
-console.log('incomeAmount: ', incomeAmount);
-console.log('expensesTitle: ', expensesTitle);
-console.log('expensesAmount: ', expensesAmount);
-console.log('additionalExpensesItem: ', additionalExpensesItem);
-console.log('targetAmount: ', targetAmount);
-console.log('periodSelect: ', periodSelect);*/
+	console.log('incomeItems: ', incomeItems);
+// Выводим полученные значения в консоль
+// console.log('calculate: ', calculate);
+// console.log('plusIncome: ', plusIncome);
+// console.log('plusExpenses: ', plusExpenses);
+// console.log('checkBoxDeposit: ', checkBoxDeposit);
+// console.log('fieldAddIncome: ', fieldAddIncome);
+// console.log('budgetMonthValue: ', budgetMonthValue);
+// console.log('budgetDayValue: ', budgetDayValue);
+// console.log('expensesMonthValue: ', expensesMonthValue);
+// console.log('additionalIncomeValue: ', additionalIncomeValue);
+// console.log('additionalExpensesValue: ', additionalExpensesValue);
+// console.log('incomePeriodValue: ', incomePeriodValue);
+// console.log('targetMonthValue: ', targetMonthValue);
+// console.log('salaryAmount: ', salaryAmount);
+// console.log('incomeTitle: ', incomeTitle);
+// console.log('incomeAmount: ', incomeAmount);
+// console.log('expensesAmount: ', expensesAmount);
+// console.log('additionalExpensesItem: ', additionalExpensesItem);
+// console.log('targetAmount: ', targetAmount);
+// console.log('periodSelect: ', periodSelect);
 
 
 /*создаем функцию, для проверки что введено число, где 
@@ -129,42 +126,22 @@ const appData = {
 	},
 	getExpenses: function () {
 		expensesItems.forEach(function (item) {
-			let itemExpenses = item.querySelector('.expenses-title').value;
-			let cashExpenses = item.querySelector('.expenses-amount').value;
-			//Введём проверку чтоб вводимое значение было типом строка и строка была не пустой
-			while (isNumber(itemExpenses) || itemExpenses.trim() === '') {
-				itemExpenses = alert('Введите текст в графу обязательных расходов');
-			}
-			//Введем проверку чтоб вводимое значение было типом данных число
-			do {
-				alert('Введите сумму обязательных расходов');	
-			} while (!isNumber(appData.expenses[itemExpenses]));
-				appData.expenses[itemExpenses] = cashExpenses;
-		});
-	},
-	getIncome: function () {
-		//узнаем о дополнительном заработке
-		if (confirm('Eсть ли у вас дополнительный заработок?')) {
-			let itemIncome;
-			do {
-				itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Введите текст');
-				//Если отмена то переходим к вопросу о возможных расходах
-				if (!itemIncome) {
-					break;
-				}
-			} while (isNumber(itemIncome) || itemIncome.trim() === '' || itemIncome === 'Введите текст');
+			const itemExpenses = item.querySelector('.expenses-title').value;
+			const cashExpenses = item.querySelector('.expenses-amount').value;
 
-			if (itemIncome) {
-				do {
-					appData.income[itemIncome] = prompt('Сколько в месяц зарабатываете на этом?', 'Введите число');
-					//Если отмена то переходим к вопросу о возможных расходах
-					if (!appData.income[itemIncome]) {
-						appData.income = {};
-						break;
-					}
-				} while (!isNumber(appData.income[itemIncome]));
+			if(itemExpenses !== '' && cashExpenses !== '') {
+				appData.expenses[itemExpenses] = cashExpenses;
 			}
-		}
+		});},
+	getIncome: function () {
+		incomeItems.forEach(function (item) {
+			const itemIncome = item.querySelector('.income-title').value;
+			const cashIncome = item.querySelector('.income-amount').value;
+
+			if (itemIncome !== '' && cashIncome !== '') {
+				appData.income[itemIncome] = cashIncome;
+			}
+		});
 
 		for (let key in appData.income) {
 			appData.incomeMonth += +appData.income[key];
