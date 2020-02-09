@@ -79,8 +79,10 @@ salaryAmount.addEventListener('input', function (event) {
 	if(!isNumber(event.target.value)) {
 		calculate.setAttribute('disabled', 'disabled');
 		salaryAmount.placeholder = "Введите число";
-		}
+	}
 });
+		
+		
 
 // Создадим объект с исходными переменными
 const appData = {
