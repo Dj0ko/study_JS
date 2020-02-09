@@ -76,13 +76,11 @@ salaryAmount.addEventListener('input', function (event) {
 		calculate.removeAttribute('disabled');
 	}
 
-	if(!isNumber(event.target.value)) {
+	if (!isNumber(event.target.value)) {
 		calculate.setAttribute('disabled', 'disabled');
 		salaryAmount.placeholder = "Введите число";
 	}
 });
-		
-		
 
 // Создадим объект с исходными переменными
 const appData = {
@@ -270,12 +268,10 @@ periodSelect.addEventListener('input', appData.setPeriod);
 /*console.log('Расходы за месяц: ' + appData.expensesMonth);
 console.log('За какой период будет достигнута цель (в месяцах): ' + appData.getTargetMonth());
 console.log('Уровень дохода: ' + appData.getStatusIncome());
-
 console.log('Наша программа включает в себя данные:');
 for (let key in appData) {
       console.log('Свойство: ' + key + ', значение свойства: ' + appData[key]);
 }
-
 for (let i = 0; i < appData.addExpenses.length; i++) {
       if (appData.addExpenses[i]) {
             appData.addExpenses[i] = appData.addExpenses[i][0].toUpperCase() + appData.addExpenses[i].substring(1);
