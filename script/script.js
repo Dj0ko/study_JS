@@ -70,15 +70,16 @@ const isNumber = function (n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
-//Запрещаем нажатие кнопки Рассчитать
-calculate.setAttribute('disabled', 'disabled');
-calculate.setAttribute('style', 'cursor: default;');
-
-salaryAmount.addEventListener('blur', function () {
-	if (salaryAmount.value !== ''.trim()) {
+//Запрещаем нажатие кнопки Рассчитать при вводе не числа
+salaryAmount.addEventListener('input', function (event) {
+	if (isNumber(event.target.value) && event.target.value > 0) {
 		calculate.removeAttribute('disabled');
-		calculate.setAttribute('style', 'cursor: pointer;');
 	}
+
+	if(!isNumber(event.target.value)) {
+		calculate.setAttribute('disabled', 'disabled');
+		salaryAmount.placeholder = "Введите число";
+		}
 });
 
 // Создадим объект с исходными переменными
