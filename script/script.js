@@ -39,14 +39,7 @@ let calculate = document.getElementById('start'), //получаем кнопк�
 	//получаем диапазон "Период расчета"
 	periodSelect = document.querySelector('.period-select'),
 	//получаем поля дополнительных расходов
-	incomeItem = document.querySelectorAll('.income-items'),
-	//получаем кнопку "Сбросить"
-	resetButton = document.getElementById('cancel'),
-	//получаем доступ ко всем полям страницы
-	allElements = document.querySelector('.calc'),
-	//получаем доступ к значению элемент "Период расчета"
-	periodAmount = document.querySelector('.period-amount');
-
+	incomeItem = document.querySelectorAll('.income-items');
 
 /*Выводим полученные значения в консоль
 console.log('calculate: ', calculate);
@@ -77,51 +70,17 @@ const isNumber = function (n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
-function disableCalculate() {
-	if (isNumber(salaryAmount.value) && salaryAmount.value > 0) {
+//Запрещаем нажатие кнопки Рассчитать при вводе не числа
+salaryAmount.addEventListener('input', function (event) {
+	if (isNumber(event.target.value) && event.target.value > 0) {
 		calculate.removeAttribute('disabled');
 	}
 
-	if (!isNumber(salaryAmount.value)) {
+	if (!isNumber(event.target.value)) {
 		calculate.setAttribute('disabled', 'disabled');
 		salaryAmount.placeholder = "Введите число";
 	}
-}
-
-//Функция для блокировки полей заполнения
-function disableInputs() {
-	//Получаем поля с левой стороны
-	const data = document.querySelector('.data');
-	//Получаем все поля ввода с вводом текста
-	const inputs = data.querySelectorAll('input[type=text]');
-	//Блокируем каждое поле
-	inputs.forEach(function (item) {
-		item.setAttribute('disabled', 'disabled');
-	});
-	//Скрываем кнопку "Рассчитать"
-	calculate.style.display = 'none';
-	//Показываем кнопку "Сбросить"
-	resetButton.style.display = 'block';
-}
-
-//Функция сброса значений
-function reset() {
-	calculate.style.display = 'block';
-	resetButton.style.display = 'none';
-	document.querySelectorAll('input').forEach(function (item) {
-		item.removeAttribute('disabled');
-		item.value = '';
-	});
-	for (let i = 1; i < incomeItems.length; i++) {
-		incomeItems[i].remove();
-	}
-	for (let i = 1; i < expensesItems.length; i++) {
-		expensesItems[i].remove();
-	}
-	periodSelect.value = '1';
-	periodAmount.textContent = '1';
-	disableCalculate();
-}
+});
 
 salaryAmount.addEventListener('click', function() {
 	let inputs = document.querySelectorAll('input');
@@ -147,32 +106,36 @@ let appData = {
 	statusIncome: 0,
 	//Заполняем форму
 	start: function () {
-		this.budget = +salaryAmount.value;
-		this.getExpenses();
-		this.getIncome();
-		this.getExpensesMonth();
-		this.getAddExpenses();
-		this.getAddIncome();
-		this.getBudget();
+		appData.budget = +salaryAmount.value;
 
-		this.showResult();
+		appData.getExpenses();
+		appData.getIncome();
+		appData.getExpensesMonth();
+		appData.getAddExpenses();
+		appData.getAddIncome();
+		appData.getBudget();
+
+		appData.showResult();
 	},
 	//Метод, для заполнения введённых значений.
 	showResult: function () {
-		budgetMonthValue.value = this.budgetMonth;
-		budgetDayValue.value = this.budgetDay;
-		expensesMonthValue.value = this.expensesMonth;
-		additionalExpensesValue.value = this.addExpenses.join(', ');
-		additionalIncomeValue.value = this.addIncome.join(', ');
-		targetMonthValue.value = this.getTargetMonth();
-		incomePeriodValue.value = this.calcPeriod();
+		budgetMonthValue.value = appData.budgetMonth;
+		budgetDayValue.value = appData.budgetDay;
+		expensesMonthValue.value = appData.expensesMonth;
+		additionalExpensesValue.value = appData.addExpenses.join(', ');
+		additionalIncomeValue.value = appData.addIncome.join(', ');
+		targetMonthValue.value = appData.getTargetMonth();
+		incomePeriodValue.value = appData.calcPeriod();
+		//Создаём динамическое изменение в поле "Накопления за период"
+		periodSelect.addEventListener('input', function () {
+			incomePeriodValue.value = appData.calcPeriod();
+		});
 	},
 	//Метод для добавления дополнительных полей "Обязательные расходы", ограничиваем тремя полями
 	addExpensesBlock: function () {
 		const cloneexpensesItem = expensesItems[0].cloneNode(true);
 		expensesItems[0].parentNode.insertBefore(cloneexpensesItem, plusExpenses);
 		expensesItems = document.querySelectorAll('.expenses-items');
-
 
 		if (expensesItems.length === 3) {
 			plusExpenses.style.display = 'none';
@@ -195,9 +158,9 @@ let appData = {
 			const cashExpenses = item.querySelector('.expenses-amount').value;
 
 			if (itemExpenses !== '' && cashExpenses !== '') {
-				this.expenses[itemExpenses] = cashExpenses;
+				appData.expenses[itemExpenses] = cashExpenses;
 			}
-		}, this);
+		});
 	},
 	//Метод для передачи значений "Дополнительный доход"
 	getIncome: function () {
@@ -206,12 +169,12 @@ let appData = {
 			const cashIncome = item.querySelector('.income-amount').value;
 
 			if (itemIncome !== '' && cashIncome !== '') {
-				this.income[itemIncome] = cashIncome;
+				appData.income[itemIncome] = cashIncome;
 			}
-		}, this);
+		});
 		//Цикл для подсчёта суммы допольнительного дохода
-		for (let key in this.income) {
-			this.incomeMonth += +this.income[key];
+		for (let key in appData.income) {
+			appData.incomeMonth += +appData.income[key];
 		}
 	},
 	//Метод для заполнения поля "Возможные расходы"
@@ -220,45 +183,45 @@ let appData = {
 		addExpenses.forEach(function (item) {
 			item = item.trim();
 			if (item !== '') {
-				this.addExpenses.push(item);
+				appData.addExpenses.push(item);
 			}
-		}, this);
+		});
 	},
 	//Метод для заполнения поля "Возможные доходы"
 	getAddIncome: function () {
 		fieldAddIncome.forEach(function (item) {
 			let itemValue = item.value.trim();
 			if (itemValue !== '') {
-				this.addIncome.push(itemValue);
+				appData.addIncome.push(itemValue);
 			}
-		}, this);
+		});
 	},
 	//метод, вычисляющий сумму всех обязательных расходов
 	getExpensesMonth: function () {
-		for (let key in this.expenses) {
-			this.expensesMonth += +this.expenses[key];
+		for (let key in appData.expenses) {
+			appData.expensesMonth += +appData.expenses[key];
 		}
 	},
 	//Метод, вычисляющий месячный и дневной бюджеты
 	getBudget: function () {
-		this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
-		this.budgetDay = Math.floor(this.budgetMonth / 30);
+		appData.budgetMonth = appData.budget + appData.incomeMonth - appData.expensesMonth;
+		appData.budgetDay = Math.floor(appData.budgetMonth / 30);
 	},
 	//Метод, считающий количество месяцев до достижения цели
 	getTargetMonth: function () {
-		if (this.budgetMonth < 0) {
+		if (appData.budgetMonth < 0) {
 			return 'Цель не будет достигнута';
 		} else {
-			return Math.ceil(targetAmount.value / this.budgetMonth);
+			return Math.ceil(targetAmount.value / appData.budgetMonth);
 		}
 	},
 	//Метод, определяющий уровень дохода
 	getStatusIncome: function () {
-		if (this.budgetDay > 1200) {
+		if (appData.budgetDay > 1200) {
 			return 'У вас высокий уровень дохода';
-		} else if ((this.budgetDay >= 600) && (this.budgetDay <= 1200)) {
+		} else if ((appData.budgetDay >= 600) && (appData.budgetDay <= 1200)) {
 			return 'У вас средний уровень дохода';
-		} else if ((this.budgetDay >= 0) && (this.budgetDay < 600)) {
+		} else if ((appData.budgetDay >= 0) && (appData.budgetDay < 600)) {
 			return 'К сожалению у вас уровень дохода ниже среднего';
 		} else {
 			return 'Что то пошло не так';
@@ -266,60 +229,48 @@ let appData = {
 	},
 	//Метод, для указания процентов по вкладу и его сумме.
 	getInfoDeposit: function () {
-		this.deposit = confirm('Есть ли у вас депозит в банке?');
-		if (this.deposit) {
+		appData.deposit = confirm('Есть ли у вас депозит в банке?');
+		if (appData.deposit) {
 			do {
-				this.percentDeposit = prompt('Какой годовой процент?', 'Введите число');
-				if (!this.percentDeposit) {
-					this.percentDeposit = 0;
+				appData.percentDeposit = prompt('Какой годовой процент?', 'Введите число');
+				if (!appData.percentDeposit) {
+					appData.percentDeposit = 0;
 					break;
 				}
-			} while (!isNumber(this.percentDeposit));
+			} while (!isNumber(appData.percentDeposit));
 
-			if (this.percentDeposit) {
+			if (appData.percentDeposit) {
 				do {
-					this.moneyDeposit = prompt('Какая сумма заложена?', 'Введите число');
-					if (!this.moneyDeposit) {
-						this.percentDeposit = 0;
-						this.moneyDeposit = 0;
+					appData.moneyDeposit = prompt('Какая сумма заложена?', 'Введите число');
+					if (!appData.moneyDeposit) {
+						appData.percentDeposit = 0;
+						appData.moneyDeposit = 0;
 						break;
 					}
-				} while (!isNumber(this.moneyDeposit));
+				} while (!isNumber(appData.moneyDeposit));
 			}
 		}
 	},
 	//Метод для подсчёта накоплений
 	calcPeriod: function () {
-		return this.budgetMonth * this.setPeriod();
+		return appData.budgetMonth * appData.setPeriod();
 	},
 	//Метод для вывода расчётного периода
 	setPeriod: function () {
+		let periodAmount = document.querySelector('.period-amount');
 		periodAmount.textContent = periodSelect.value;
 		return periodAmount.textContent;
 	}
 };
 
 //Обработчик событий для запуска программы по кнопке "Рассчитать"
-//связываем функцию Start с объектом appData
-// calculate.addEventListener('click', appData.start.bind(appData));
-calculate.addEventListener('click', appData.start.bind(appData));
+calculate.addEventListener('click', appData.start);
 //Обработчик события для добавления дополнительных полей "Обязательные расходы" по нажатию на кнопку плюс
 plusExpenses.addEventListener('click', appData.addExpensesBlock);
 //Обработчик события для добавления дополнительных полей "Дополнительный доход" по нажатию на кнопку плюс
 plusIncome.addEventListener('click', appData.addIncomeBlock);
 //Обработчик события для динамического изменения значения "Период расчета" 
 periodSelect.addEventListener('input', appData.setPeriod);
-//Запрещаем нажатие кнопки Рассчитать при вводе не числа
-salaryAmount.addEventListener('input', disableCalculate);
-//Блокируем поля для заполнения с левой стороны
-calculate.addEventListener('click', disableInputs);
-//Сбрасываем до первоначальных значений
-resetButton.addEventListener('click', reset);
-//Создаём динамическое изменение в поле "Накопления за период"
-periodSelect.addEventListener('input', (function () {
-	incomePeriodValue.value = this.calcPeriod();
-}).bind(appData));
-
 
 
 /*console.log('Расходы за месяц: ' + appData.expensesMonth);
