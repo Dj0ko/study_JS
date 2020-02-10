@@ -82,8 +82,15 @@ salaryAmount.addEventListener('input', function (event) {
 	}
 });
 
+salaryAmount.addEventListener('click', function() {
+	let inputs = document.querySelectorAll('input');
+	inputs.forEach(function (item) {
+		item.value = item.defaultValue;
+	});
+});
+
 // Создадим объект с исходными переменными
-const appData = {
+let appData = {
 	budget: 0,
 	budgetDay: 0,
 	budgetMonth: 0,
@@ -264,6 +271,7 @@ plusExpenses.addEventListener('click', appData.addExpensesBlock);
 plusIncome.addEventListener('click', appData.addIncomeBlock);
 //Обработчик события для динамического изменения значения "Период расчета" 
 periodSelect.addEventListener('input', appData.setPeriod);
+
 
 /*console.log('Расходы за месяц: ' + appData.expensesMonth);
 console.log('За какой период будет достигнута цель (в месяцах): ' + appData.getTargetMonth());
