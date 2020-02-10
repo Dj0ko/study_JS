@@ -333,19 +333,20 @@ let appData = {
 		periodAmount.textContent = '1';
 		//запускаем проверку на вводимое число в поле "Месячный доход"
 		disableCalculate();
+		//обнуляем значения 
 		this.budget = 0;
-			this.budgetDay = 0;
-			this.budgetMonth = 0;
-			this.expensesMonth = 0;
-			this.income = {};
-			this.incomeMonth = 0;
-			this.addIncome = [];
-			this.expenses = {};
-			this.addExpenses = [];
-			this.deposit = false;
-			this.percentDeposit = 0;
-			this.moneyDeposit = 0;
-			this.statusIncome = 0;
+		this.budgetDay = 0;
+		this.budgetMonth = 0;
+		this.expensesMonth = 0;
+		this.income = {};
+		this.incomeMonth = 0;
+		this.addIncome = [];
+		this.expenses = {};
+		this.addExpenses = [];
+		this.deposit = false;
+		this.percentDeposit = 0;
+		this.moneyDeposit = 0;
+		this.statusIncome = 0;
 	}
 };
 
