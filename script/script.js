@@ -86,13 +86,6 @@ function disableInputs() {
 	resetButton.style.display = 'block';
 }
 
-salaryAmount.addEventListener('click', function () {
-	let inputs = document.querySelectorAll('input');
-	inputs.forEach(function (item) {
-		item.value = item.defaultValue;
-	});
-});
-
 const AppData = function () {
 	this.budget = 0;
 	this.budgetDay = 0;
@@ -186,6 +179,13 @@ AppData.prototype.getAddExpenses = function () {
 			this.addExpenses.push(item);
 		}
 	}, this);
+	for (let i = 0; i < this.addExpenses.length; i++) {
+		if (this.addExpenses[i]) {
+			  this.addExpenses[i] = this.addExpenses[i][0].toUpperCase() + this.addExpenses[i].substring(1);
+		} else {
+			  this.addExpenses = [];
+		}
+	}
 };
 //Метод для заполнения поля "Возможные доходы"
 AppData.prototype.getAddIncome = function () {
@@ -195,6 +195,13 @@ AppData.prototype.getAddIncome = function () {
 			this.addIncome.push(itemValue);
 		}
 	}, this);
+	for (let i = 0; i < this.addIncome.length; i++) {
+		if (this.addIncome[i]) {
+			  this.addIncome[i] = this.addIncome[i][0].toUpperCase() + this.addIncome[i].substring(1);
+		} else {
+			  this.addIncome = [];
+		}
+	}
 };
 //метод, вычисляющий сумму всех обязательных расходов
 AppData.prototype.getExpensesMonth = function () {
