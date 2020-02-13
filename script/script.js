@@ -1,5 +1,6 @@
+document.addEventListener('DOMContentLoaded', function () {
 'use strict';
-let calculate = document.getElementById('start'), //получаем кнопку "Рассчитать"
+const calculate = document.getElementById('start'), //получаем кнопку "Рассчитать"
 	//Получаем коллекцию кнопок
 	pluses = document.getElementsByTagName('button'),
 	//получаем первый "+"
@@ -28,10 +29,6 @@ let calculate = document.getElementById('start'), //получаем кнопк�
 	targetMonthValue = fieldsOutput[6],
 	//получаем поле ввода "Месячный доход"
 	salaryAmount = document.querySelector('.salary-amount'),
-	//получаем поля "Дополнительный доход"
-	incomeItems = document.querySelectorAll('.income-items'),
-	//получаем поле суммы "Обязательные расходы"
-	expensesItems = document.querySelectorAll('.expenses-items'),
 	//получаем поле ввода "Возможные расходы"
 	additionalExpensesItem = document.querySelector('.additional_expenses-item'),
 	//получаем поле ввода "Цель"
@@ -46,6 +43,10 @@ let calculate = document.getElementById('start'), //получаем кнопк�
 	allElements = document.querySelector('.calc'),
 	//получаем доступ к значению элемент "Период расчета"
 	periodAmount = document.querySelector('.period-amount');
+	//получаем поле суммы "Обязательные расходы"
+let expensesItems = document.querySelectorAll('.expenses-items'),
+	//получаем поля "Дополнительный доход"
+	incomeItems = document.querySelectorAll('.income-items');
 
 // const AppData = function () {
 class AppData {
@@ -83,6 +84,7 @@ class AppData {
 	//Заполняем форму
 	start() {
 		this.budget = +salaryAmount.value;
+		this.disableInputs();
 		this.getExpenses();
 		this.getIncome();
 		this.getExpensesMonth();
@@ -151,7 +153,7 @@ class AppData {
 	}
 	//Метод для заполнения поля "Возможные расходы"
 	getAddExpenses() {
-		let addExpenses = additionalExpensesItem.value.split(',');
+		const addExpenses = additionalExpensesItem.value.split(',');
 		addExpenses.forEach((item) => {
 			item = item.trim();
 			if (item !== '') {
@@ -163,7 +165,7 @@ class AppData {
 	//Метод для заполнения поля "Возможные доходы"
 	getAddIncome() {
 		fieldAddIncome.forEach((item) => {
-			let itemValue = item.value.trim();
+			const itemValue = item.value.trim();
 			if (itemValue !== '') {
 				this.addIncome.push(itemValue);
 			}
@@ -318,8 +320,6 @@ class AppData {
 		periodSelect.addEventListener('input', this.setPeriod);
 		//Запрещаем нажатие кнопки Рассчитать при вводе не числа
 		salaryAmount.addEventListener('input', this.disableCalculate.bind(this));
-		//Блокируем поля для заполнения с левой стороны
-		calculate.addEventListener('click', this.disableInputs);
 		//Сбрасываем до первоначальных значений
 		resetButton.addEventListener('click', this.reset.bind(this));
 		//Создаём динамическое изменение в поле "Накопления за период"
@@ -332,3 +332,4 @@ class AppData {
 const appData = new AppData();
 appData.eventsListeners();
 console.log(appData);
+});
