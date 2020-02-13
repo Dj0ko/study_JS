@@ -51,40 +51,51 @@ let calculate = document.getElementById('start'), //получаем кнопк�
 /*создаем функцию, для проверки что введено число, где 
 parseFloat - приведение к числу с плавающей запятой
 isFinite - проверка для определения является ли число конечным */
-const isNumber = function (n) {
+const isNumber = (n) => {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
-function disableCalculate() {
-	if (isNumber(salaryAmount.value) && salaryAmount.value > 0) {
-		calculate.removeAttribute('disabled');
-	}
+// Функция разблокировки кнопки "Рассчитать"
+// const disableCalculate = () => {
+// 	if (isNumber(salaryAmount.value) && salaryAmount.value > 0) {
+// 		calculate.removeAttribute('disabled');
+// 	}
 
-	if (!isNumber(salaryAmount.value)) {
-		calculate.setAttribute('disabled', 'disabled');
-		salaryAmount.placeholder = "Введите число";
-	}
-}
+// 	if (!isNumber(salaryAmount.value)) {
+// 		calculate.setAttribute('disabled', 'disabled');
+// 		salaryAmount.placeholder = "Введите число";
+// 	}
+// };
 
-//Функция для блокировки полей заполнения
-function disableInputs() {
-	//Получаем поля с левой стороны
-	const data = document.querySelector('.data');
-	//Получаем все поля ввода с вводом текста
-	const inputs = data.querySelectorAll('input[type=text]');
-	//Блокируем каждое поле
-	inputs.forEach(function (item) {
-		item.setAttribute('disabled', 'disabled');
-	});
-	//Блокируем плюсы
-	document.querySelectorAll('.btn_plus').forEach(function (item) {
-		item.setAttribute('disabled', 'disabled');
-	});
-	//Скрываем кнопку "Рассчитать"
-	calculate.style.display = 'none';
-	//Показываем кнопку "Сбросить"
-	resetButton.style.display = 'block';
-}
+// //Функция для блокировки полей заполнения
+// const disableInputs = () => {
+// 	//Получаем поля с левой стороны
+// 	const data = document.querySelector('.data');
+// 	//Получаем все поля ввода с вводом текста
+// 	const inputs = data.querySelectorAll('input[type=text]');
+// 	//Блокируем каждое поле
+// 	inputs.forEach(function (item) {
+// 		item.setAttribute('disabled', 'disabled');
+// 	});
+// 	//Блокируем плюсы
+// 	document.querySelectorAll('.btn_plus').forEach((item) => {
+// 		item.setAttribute('disabled', 'disabled');
+// 	});
+// 	//Скрываем кнопку "Рассчитать"
+// 	calculate.style.display = 'none';
+// 	//Показываем кнопку "Сбросить"
+// 	resetButton.style.display = 'block';
+// };
+
+const capitalization = (arr) => {
+	for (let i = 0; i < arr.length; i++) {
+		if (arr[i]) {
+			arr[i] = arr[i][0].toUpperCase() + arr[i].substring(1);
+		} else {
+			arr = [];
+		}
+	}
+};
 
 const AppData = function () {
 	this.budget = 0;
@@ -146,14 +157,14 @@ AppData.prototype.addIncomeBlock = function () {
 };
 //Метод для передачи значений "Обязательные расходы"
 AppData.prototype.getExpenses = function () {
-	expensesItems.forEach(function (item) {
+	expensesItems.forEach((item) => {
 		const itemExpenses = item.querySelector('.expenses-title').value;
 		const cashExpenses = item.querySelector('.expenses-amount').value;
 
 		if (itemExpenses !== '' && !isNumber(itemExpenses) && cashExpenses !== '' && isNumber(cashExpenses)) {
 			this.expenses[itemExpenses] = cashExpenses;
 		}
-	}, this);
+	});
 };
 //Метод для передачи значений "Дополнительный доход"
 AppData.prototype.getIncome = function () {
@@ -179,13 +190,13 @@ AppData.prototype.getAddExpenses = function () {
 			this.addExpenses.push(item);
 		}
 	}, this);
-	for (let i = 0; i < this.addExpenses.length; i++) {
-		if (this.addExpenses[i]) {
-			  this.addExpenses[i] = this.addExpenses[i][0].toUpperCase() + this.addExpenses[i].substring(1);
-		} else {
-			  this.addExpenses = [];
-		}
-	}
+	// for (let i = 0; i < this.addExpenses.length; i++) {
+	// 	if (this.addExpenses[i]) {
+	// 		this.addExpenses[i] = this.addExpenses[i][0].toUpperCase() + this.addExpenses[i].substring(1);
+	// 	} else {
+	// 		this.addExpenses = [];
+	// 	}
+	// }
 };
 //Метод для заполнения поля "Возможные доходы"
 AppData.prototype.getAddIncome = function () {
@@ -195,13 +206,13 @@ AppData.prototype.getAddIncome = function () {
 			this.addIncome.push(itemValue);
 		}
 	}, this);
-	for (let i = 0; i < this.addIncome.length; i++) {
-		if (this.addIncome[i]) {
-			  this.addIncome[i] = this.addIncome[i][0].toUpperCase() + this.addIncome[i].substring(1);
-		} else {
-			  this.addIncome = [];
-		}
-	}
+	// for (let i = 0; i < this.addIncome.length; i++) {
+	// 	if (this.addIncome[i]) {
+	// 		this.addIncome[i] = this.addIncome[i][0].toUpperCase() + this.addIncome[i].substring(1);
+	// 	} else {
+	// 		this.addIncome = [];
+	// 	}
+	// }
 };
 //метод, вычисляющий сумму всех обязательных расходов
 AppData.prototype.getExpensesMonth = function () {
@@ -223,6 +234,7 @@ AppData.prototype.getTargetMonth = function () {
 	}
 };
 //Метод, определяющий уровень дохода
+// AppData.prototype.getStatusIncome = function () {
 AppData.prototype.getStatusIncome = function () {
 	if (this.budgetDay > 1200) {
 		return 'У вас высокий уровень дохода';
@@ -267,6 +279,17 @@ AppData.prototype.setPeriod = function () {
 	periodAmount.textContent = periodSelect.value;
 	return periodAmount.textContent;
 };
+// Функция разблокировки кнопки "Рассчитать"
+AppData.prototype.disableCalculate = function() {
+	if (isNumber(salaryAmount.value) && salaryAmount.value > 0) {
+		calculate.removeAttribute('disabled');
+	}
+
+	if (!isNumber(salaryAmount.value)) {
+		calculate.setAttribute('disabled', 'disabled');
+		salaryAmount.placeholder = "Введите число";
+	}
+};
 //Метод сброса полей
 AppData.prototype.reset = function () {
 	//Показываем кнопку "Рассчитать"
@@ -293,7 +316,7 @@ AppData.prototype.reset = function () {
 	periodSelect.value = '1';
 	periodAmount.textContent = '1';
 	//запускаем проверку на вводимое число в поле "Месячный доход"
-	disableCalculate();
+	this.disableCalculate();
 	//обнуляем значения 
 	this.budget = 0;
 	this.budgetDay = 0;
@@ -309,11 +332,30 @@ AppData.prototype.reset = function () {
 	this.moneyDeposit = 0;
 	this.statusIncome = 0;
 };
+//Функция для блокировки полей заполнения
+AppData.prototype.disableInputs = function () {
+	//Получаем поля с левой стороны
+	const data = document.querySelector('.data');
+	//Получаем все поля ввода с вводом текста
+	const inputs = data.querySelectorAll('input[type=text]');
+	//Блокируем каждое поле
+	inputs.forEach(function (item) {
+		item.setAttribute('disabled', 'disabled');
+	});
+	//Блокируем плюсы
+	document.querySelectorAll('.btn_plus').forEach((item) => {
+		item.setAttribute('disabled', 'disabled');
+	});
+	//Скрываем кнопку "Рассчитать"
+	calculate.style.display = 'none';
+	//Показываем кнопку "Сбросить"
+	resetButton.style.display = 'block';
+};
 AppData.prototype.eventsListeners = function () {
 	//Обработчик событий для запуска программы по кнопке "Рассчитать"
 	//связываем функцию Start с объектом appData
 	// calculate.addEventListener('click', appData.start.bind(appData));
-	calculate.addEventListener('click', this.start);
+	calculate.addEventListener('click', this.start.bind(this));
 	//Обработчик события для добавления дополнительных полей "Обязательные расходы" по нажатию на кнопку плюс
 	plusExpenses.addEventListener('click', this.addExpensesBlock);
 	//Обработчик события для добавления дополнительных полей "Дополнительный доход" по нажатию на кнопку плюс
@@ -321,39 +363,39 @@ AppData.prototype.eventsListeners = function () {
 	//Обработчик события для динамического изменения значения "Период расчета" 
 	periodSelect.addEventListener('input', this.setPeriod);
 	//Запрещаем нажатие кнопки Рассчитать при вводе не числа
-	salaryAmount.addEventListener('input', disableCalculate);
+	salaryAmount.addEventListener('input', this.disableCalculate.bind(this));
 	//Блокируем поля для заполнения с левой стороны
-	calculate.addEventListener('click', disableInputs);
+	calculate.addEventListener('click', this.disableInputs);
 	//Сбрасываем до первоначальных значений
 	resetButton.addEventListener('click', this.reset);
 	//Создаём динамическое изменение в поле "Накопления за период"
-	periodSelect.addEventListener('input', (function () {
+	periodSelect.addEventListener('input', (() => {
 		incomePeriodValue.value = this.calcPeriod();
 	}));
-}
-
+};
 
 const appData = new AppData();
+appData.eventsListeners();
 console.log(appData);
 
 
-//Обработчик событий для запуска программы по кнопке "Рассчитать"
-//связываем функцию Start с объектом appData
+// //Обработчик событий для запуска программы по кнопке "Рассчитать"
+// //связываем функцию Start с объектом appData
+// // calculate.addEventListener('click', appData.start.bind(appData));
 // calculate.addEventListener('click', appData.start.bind(appData));
-calculate.addEventListener('click', appData.start.bind(appData));
-//Обработчик события для добавления дополнительных полей "Обязательные расходы" по нажатию на кнопку плюс
-plusExpenses.addEventListener('click', appData.addExpensesBlock);
-//Обработчик события для добавления дополнительных полей "Дополнительный доход" по нажатию на кнопку плюс
-plusIncome.addEventListener('click', appData.addIncomeBlock);
-//Обработчик события для динамического изменения значения "Период расчета" 
-periodSelect.addEventListener('input', appData.setPeriod);
-//Запрещаем нажатие кнопки Рассчитать при вводе не числа
-salaryAmount.addEventListener('input', disableCalculate);
-//Блокируем поля для заполнения с левой стороны
-calculate.addEventListener('click', disableInputs);
-//Сбрасываем до первоначальных значений
-resetButton.addEventListener('click', appData.reset.bind(appData));
-//Создаём динамическое изменение в поле "Накопления за период"
-periodSelect.addEventListener('input', (function () {
-	incomePeriodValue.value = this.calcPeriod();
-}).bind(appData));
+// //Обработчик события для добавления дополнительных полей "Обязательные расходы" по нажатию на кнопку плюс
+// plusExpenses.addEventListener('click', appData.addExpensesBlock);
+// //Обработчик события для добавления дополнительных полей "Дополнительный доход" по нажатию на кнопку плюс
+// plusIncome.addEventListener('click', appData.addIncomeBlock);
+// //Обработчик события для динамического изменения значения "Период расчета" 
+// periodSelect.addEventListener('input', appData.setPeriod);
+// //Запрещаем нажатие кнопки Рассчитать при вводе не числа
+// salaryAmount.addEventListener('input', appData.disableCalculate);
+// //Блокируем поля для заполнения с левой стороны
+// calculate.addEventListener('click', appData.disableInputs);
+// //Сбрасываем до первоначальных значений
+// resetButton.addEventListener('click', appData.reset.bind(appData));
+// //Создаём динамическое изменение в поле "Накопления за период"
+// periodSelect.addEventListener('input', (function () {
+// 	incomePeriodValue.value = this.calcPeriod();
+// }).bind(appData));
