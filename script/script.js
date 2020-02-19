@@ -235,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					calculate.removeAttribute('disabled');
 				} else {
 					alert('Введите корректное значение в поле проценты');
+					depositPercent.value = '';
 					calculate.setAttribute('disabled', 'disabled');
 				}
 			}
@@ -257,6 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				depositPercent.removeAttribute('disabled');
 			} else {
 				depositPercent.value = valueSelect;
+				depositPercent.style.display = 'none';
 			}
 		}
 		//Метод для переключения состояния блоков "Депозит"
