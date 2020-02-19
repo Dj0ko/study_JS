@@ -225,11 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
 				calculate.removeAttribute('disabled');
 			}
 
-			if (!this.isNumber(salaryAmount.value)) {
-				calculate.setAttribute('disabled', 'disabled');
-				salaryAmount.placeholder = "Введите число";
-			}
-
 			if (depositPercent.value) {
 				if (this.isNumber(depositPercent.value) && (depositPercent.value > 0 && depositPercent.value < 100)) {
 					calculate.removeAttribute('disabled');
@@ -238,6 +233,11 @@ document.addEventListener('DOMContentLoaded', function () {
 					depositPercent.value = '';
 					calculate.setAttribute('disabled', 'disabled');
 				}
+			}
+
+			if (!this.isNumber(salaryAmount.value)) {
+				calculate.setAttribute('disabled', 'disabled');
+				salaryAmount.placeholder = "Введите число";
 			}
 		}
 		//Метод для получения значений при имеющемся вкладе
