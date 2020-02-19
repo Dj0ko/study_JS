@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				if (this.isNumber(depositPercent.value) && (depositPercent.value > 0 && depositPercent.value < 100)) {
 					calculate.removeAttribute('disabled');
 				} else {
-					alert('sss');
+					alert('Введите корректное значение в поле проценты');
 					calculate.setAttribute('disabled', 'disabled');
 				}
 			}
