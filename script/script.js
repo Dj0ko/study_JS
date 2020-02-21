@@ -42,17 +42,17 @@ window.addEventListener('DOMContentLoaded', function () {
             timerSeconds.textContent = addZero(timer.seconds);
 
             if (timer.timeRemaining > 0) {
-                setTimeout(updateClock, 1000);
+                setInterval(updateClock, 1000);
             } else {
+                clearInterval(setInterval(updateClock, 1000));
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
                 timerSeconds.textContent = '00';
             }
         }
-
         updateClock();
     }
 
-    setInterval(countTimer, 1000, '21 february 2020');
+    countTimer('22 february 2020');
 
 });
