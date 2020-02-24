@@ -3,14 +3,14 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // Функция таймера
     function countTimer(deadline) {
-        let timerHours = document.querySelector('#timer-hours'),
+        const timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
 
 
         // Функция, возвращающая часы, минуты и секунды
         function getTimeRemaining() {
-            let dateStop = new Date(deadline).getTime(),
+            const dateStop = new Date(deadline).getTime(),
                 dateNow = new Date().getTime(),
                 timeRemaining = (dateStop - dateNow) / 1000,
                 seconds = Math.floor(timeRemaining % 60),
@@ -25,34 +25,32 @@ window.addEventListener('DOMContentLoaded', function () {
         }
 
         //Функция для добавления 0 перед значениями состоящими из одной цифры
-		function addZero(data) {
-			if (String(data).length === 1) {
-				return '0' + data;
-			} else {
-				return data;
-			}
-		}
+        function addZero(data) {
+            if (String(data).length === 1) {
+                return '0' + data;
+            } else {
+                return data;
+            }
+        }
 
         // Функция обновления таймера
         function updateClock() {
-            let timer = getTimeRemaining();
-
-            timerHours.textContent = addZero(timer.hours);
-            timerMinutes.textContent = addZero(timer.minutes);
-            timerSeconds.textContent = addZero(timer.seconds);
+            const timer = getTimeRemaining();
 
             if (timer.timeRemaining > 0) {
-                setInterval(updateClock, 1000);
+                timerHours.textContent = addZero(timer.hours);
+                timerMinutes.textContent = addZero(timer.minutes);
+                timerSeconds.textContent = addZero(timer.seconds);
             } else {
-                clearInterval(setInterval(updateClock, 1000));
+                clearInterval(updateTimer);
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
                 timerSeconds.textContent = '00';
             }
         }
-        updateClock();
+        const updateTimer = setInterval(updateClock, 0);
     }
 
-    countTimer('22 february 2020');
+    countTimer('25 february 2020');
 
 });
