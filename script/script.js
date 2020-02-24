@@ -107,7 +107,7 @@ window.addEventListener('DOMContentLoaded', function () {
             openPopUp = requestAnimationFrame(popUpAnimateOpen);
             popup.style.display = 'block';
             if (count < 100) {
-                count += 5;
+                count += 15;
                 popupContent.style.top = count + 'px';
             } else {
                 cancelAnimationFrame(openPopUp);
@@ -119,9 +119,12 @@ window.addEventListener('DOMContentLoaded', function () {
             closePopUp = requestAnimationFrame(popUpAnimateClose);
             setTimeout(() => {
                 popup.style.display = 'none';
-            }, 500);
-            if (count > -100) {
-                count -= 5;
+            }, 800);
+            // console.log(setTimeout(() => {
+            //     popup.style.display = 'none';
+            // }, 500));
+            if (count > -400) {
+                count -= 10;
                 popupContent.style.top = count + 'px';
             } else {
                 cancelAnimationFrame(closePopUp);
