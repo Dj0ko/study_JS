@@ -53,4 +53,106 @@ window.addEventListener('DOMContentLoaded', function () {
 
     countTimer('25 february 2020');
 
+    //меню
+    const toggleMenu = () => {
+        //получаем доступ к кнопке "Меню"
+        const btnMenu = document.querySelector('.menu'),
+            //получаем доступ к блоку меню
+            menu = document.querySelector('menu'),
+            //получаем кнопку закрытия меню
+            closeBtn = document.querySelector('.close-btn'),
+            menuItems = menu.querySelectorAll('ul>li');
+        //Функция для октрытия/закрытия меню через стили
+        // const handlerMenu = () => {
+        //     if (!menu.style.transform || menu.style.transform === `translate(-100%)`) {
+        //         menu.style.transform = `translate(0)`;
+        //     } else {
+        //         menu.style.transform = `translate(-100%)`;
+        //     }
+        // }
+
+        //Функция для октрытия/закрытия меню через переключение класса
+        const handlerMenu = () => {
+            menu.classList.toggle('active-menu');
+        }
+        //Вешаем обработчик события на кнопку "Меню" для открытия и закрытия меню
+        btnMenu.addEventListener('click', handlerMenu);
+        // обработчик события для закрытия меню на крестик
+        closeBtn.addEventListener('click', handlerMenu);
+        // вешаем закрытие меню на клик по пунктам меню
+        menuItems.forEach((elem) => {
+            elem.addEventListener('click', handlerMenu);
+        })
+
+    };
+
+    toggleMenu();
+
+    // popup
+    const togglePopUp = () => {
+        // получаем доступ к popUp окну
+        const popup = document.querySelector('.popup'),
+            //получаем доступ к содержимому popUp окна
+            popupContent = document.querySelector('.popup-content'),
+            // получаем доступ к кнопкам
+            popUpBtn = document.querySelectorAll('.popup-btn'),
+            // получам доступ к кнопке закрытия popup окна
+            popUpClose = document.querySelector('.popup-close');
+        let count = -100,
+            openPopUp,
+            closePopUp;
+
+        //Анимация открытия popUp
+        const popUpAnimateOpen = () => {
+            openPopUp = requestAnimationFrame(popUpAnimateOpen);
+            popup.style.display = 'block';
+            if (count < 100) {
+                count += 5;
+                popupContent.style.top = count + 'px';
+            } else {
+                cancelAnimationFrame(openPopUp);
+            }
+        };
+
+        //Анимация закрытия popUp
+        const popUpAnimateClose = () => {
+            closePopUp = requestAnimationFrame(popUpAnimateClose);
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 500);
+            if (count > -100) {
+                count -= 5;
+                popupContent.style.top = count + 'px';
+            } else {
+                cancelAnimationFrame(closePopUp);
+            }
+        }
+        if (innerWidth >= 768) {
+            // реализуем открытие popup окна c помощью анимации
+            popUpBtn.forEach((elem) => {
+                elem.addEventListener('click', () => {
+                    openPopUp = requestAnimationFrame(popUpAnimateOpen);
+                });
+            });
+
+            // реализуем закрытие popup окна на крестик c помощью анимации
+            popUpClose.addEventListener('click', () => {
+                closePopUp = requestAnimationFrame(popUpAnimateClose);
+            });
+        } else {
+            // Открытие popUp окна если ширина экрана меньше 768
+            popUpBtn.forEach((elem) => {
+                elem.addEventListener('click', () => {
+                    popup.style.display = 'block';
+                });
+            });
+
+            // Закрытие popUp окна если ширина экрана меньше 768
+            popUpClose.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+        }
+    };
+
+    togglePopUp();
 });
