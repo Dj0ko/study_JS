@@ -55,22 +55,21 @@ window.addEventListener('DOMContentLoaded', function () {
 
     //меню
     const toggleMenu = () => {
-        //получаем доступ к кнопке "Меню"
-        const btnMenu = document.querySelector('.menu'),
-            //получаем доступ к блоку меню
+        //получаем доступ к блоку меню и к body
+        const body = document.querySelector('body'),
             menu = document.querySelector('menu');
 
         //Функция для октрытия/закрытия меню через переключение класса
         const handlerMenu = () => {
             menu.classList.toggle('active-menu');
         }
-        //Вешаем обработчик события на кнопку "Меню" для открытия и закрытия меню
-        btnMenu.addEventListener('click', handlerMenu);
-        //при помощи делигирования закрываем меню если кликнули на крестик или пункт меню
-        menu.addEventListener('click', (event) => {
+        //Вешаем обработчик события для открытия и закрытия меню
+        body.addEventListener('click', (event) => {
             let target = event.target;
-    
-            if (target.classList.contains('close-btn')) {
+
+            if (target.closest('.menu')) {
+                handlerMenu();
+            } else if (target.classList.contains('close-btn') || !target.closest('menu')) {
                 handlerMenu();
             } else {
                 target = target.closest('li');
@@ -80,7 +79,6 @@ window.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-
     };
 
     toggleMenu();
@@ -133,17 +131,17 @@ window.addEventListener('DOMContentLoaded', function () {
             // реализуем закрытие popup окна на крестик или если кликнули мимо окна
             popup.addEventListener('click', (event) => {
                 let target = event.target;
-    
+
                 if (target.classList.contains('popup-close')) {
                     closePopUp = requestAnimationFrame(popUpAnimateClose);
                 } else {
                     target = target.closest('.popup-content');
-    
+
                     if (!target) {
                         closePopUp = requestAnimationFrame(popUpAnimateClose);
                     }
                 }
-    
+
             });
         } else {
             // Открытие popUp окна если ширина экрана меньше 768
@@ -156,17 +154,17 @@ window.addEventListener('DOMContentLoaded', function () {
             // Закрытие popUp окна если ширина экрана меньше 768
             popup.addEventListener('click', (event) => {
                 let target = event.target;
-    
+
                 if (target.classList.contains('popup-close')) {
                     popup.style.display = 'none';
                 } else {
                     target = target.closest('.popup-content');
-    
+
                     if (!target) {
                         popup.style.display = 'none';
                     }
                 }
-    
+
             });
         }
     };
