@@ -58,10 +58,7 @@ window.addEventListener('DOMContentLoaded', function () {
         //получаем доступ к кнопке "Меню"
         const btnMenu = document.querySelector('.menu'),
             //получаем доступ к блоку меню
-            menu = document.querySelector('menu'),
-            //получаем кнопку закрытия меню
-            closeBtn = document.querySelector('.close-btn'),
-            menuItems = menu.querySelectorAll('ul>li');
+            menu = document.querySelector('menu');
 
         //Функция для октрытия/закрытия меню через переключение класса
         const handlerMenu = () => {
@@ -69,12 +66,20 @@ window.addEventListener('DOMContentLoaded', function () {
         }
         //Вешаем обработчик события на кнопку "Меню" для открытия и закрытия меню
         btnMenu.addEventListener('click', handlerMenu);
-        // обработчик события для закрытия меню на крестик
-        closeBtn.addEventListener('click', handlerMenu);
-        // вешаем закрытие меню на клик по пунктам меню
-        menuItems.forEach((elem) => {
-            elem.addEventListener('click', handlerMenu);
-        })
+        //при помощи делигирования закрываем меню если кликнули на крестик или пункт меню
+        menu.addEventListener('click', (event) => {
+            let target = event.target;
+    
+            if (target.classList.contains('close-btn')) {
+                handlerMenu();
+            } else {
+                target = target.closest('li');
+
+                if (target) {
+                    handlerMenu();
+                }
+            }
+        });
 
     };
 
@@ -87,9 +92,7 @@ window.addEventListener('DOMContentLoaded', function () {
             //получаем доступ к содержимому popUp окна
             popupContent = document.querySelector('.popup-content'),
             // получаем доступ к кнопкам
-            popUpBtn = document.querySelectorAll('.popup-btn'),
-            // получам доступ к кнопке закрытия popup окна
-            popUpClose = document.querySelector('.popup-close');
+            popUpBtn = document.querySelectorAll('.popup-btn');
         let count = -100,
             openPopUp,
             closePopUp;
@@ -172,10 +175,11 @@ window.addEventListener('DOMContentLoaded', function () {
 
     //табы
     const tabs = () => {
+        //получаем необходимые элементы
         const tabHeader = document.querySelector('.service-header'),
             tab = tabHeader.querySelectorAll('.service-header-tab'),
             tabContent = document.querySelectorAll('.service-tab');
-
+        //функция для показа/скрытие выбранных табов
         const toogleTabContent = (index) => {
             for (let i = 0; i < tabContent.length; i++) {
                 if (index === i) {
@@ -187,7 +191,6 @@ window.addEventListener('DOMContentLoaded', function () {
                 }
             }
         };
-
         tabHeader.addEventListener('click', (event) => {
             let target = event.target;
             target = target.closest('.service-header-tab');
