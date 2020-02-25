@@ -62,14 +62,6 @@ window.addEventListener('DOMContentLoaded', function () {
             //получаем кнопку закрытия меню
             closeBtn = document.querySelector('.close-btn'),
             menuItems = menu.querySelectorAll('ul>li');
-        //Функция для октрытия/закрытия меню через стили
-        // const handlerMenu = () => {
-        //     if (!menu.style.transform || menu.style.transform === `translate(-100%)`) {
-        //         menu.style.transform = `translate(0)`;
-        //     } else {
-        //         menu.style.transform = `translate(-100%)`;
-        //     }
-        // }
 
         //Функция для октрытия/закрытия меню через переключение класса
         const handlerMenu = () => {
@@ -120,9 +112,6 @@ window.addEventListener('DOMContentLoaded', function () {
             setTimeout(() => {
                 popup.style.display = 'none';
             }, 800);
-            // console.log(setTimeout(() => {
-            //     popup.style.display = 'none';
-            // }, 500));
             if (count > -400) {
                 count -= 10;
                 popupContent.style.top = count + 'px';
@@ -138,9 +127,20 @@ window.addEventListener('DOMContentLoaded', function () {
                 });
             });
 
-            // реализуем закрытие popup окна на крестик c помощью анимации
-            popUpClose.addEventListener('click', () => {
-                closePopUp = requestAnimationFrame(popUpAnimateClose);
+            // реализуем закрытие popup окна на крестик или если кликнули мимо окна
+            popup.addEventListener('click', (event) => {
+                let target = event.target;
+    
+                if (target.classList.contains('popup-close')) {
+                    closePopUp = requestAnimationFrame(popUpAnimateClose);
+                } else {
+                    target = target.closest('.popup-content');
+    
+                    if (!target) {
+                        closePopUp = requestAnimationFrame(popUpAnimateClose);
+                    }
+                }
+    
             });
         } else {
             // Открытие popUp окна если ширина экрана меньше 768
@@ -151,11 +151,56 @@ window.addEventListener('DOMContentLoaded', function () {
             });
 
             // Закрытие popUp окна если ширина экрана меньше 768
-            popUpClose.addEventListener('click', () => {
-                popup.style.display = 'none';
+            popup.addEventListener('click', (event) => {
+                let target = event.target;
+    
+                if (target.classList.contains('popup-close')) {
+                    popup.style.display = 'none';
+                } else {
+                    target = target.closest('.popup-content');
+    
+                    if (!target) {
+                        popup.style.display = 'none';
+                    }
+                }
+    
             });
         }
     };
 
     togglePopUp();
+
+    //табы
+    const tabs = () => {
+        const tabHeader = document.querySelector('.service-header'),
+            tab = tabHeader.querySelectorAll('.service-header-tab'),
+            tabContent = document.querySelectorAll('.service-tab');
+
+        const toogleTabContent = (index) => {
+            for (let i = 0; i < tabContent.length; i++) {
+                if (index === i) {
+                    tab[i].classList.add('active');
+                    tabContent[i].classList.remove('d-none');
+                } else {
+                    tab[i].classList.remove('active');
+                    tabContent[i].classList.add('d-none');
+                }
+            }
+        };
+
+        tabHeader.addEventListener('click', (event) => {
+            let target = event.target;
+            target = target.closest('.service-header-tab');
+
+            if (target) {
+                tab.forEach((item, i) => {
+                    if (item === target) {
+                        toogleTabContent(i);
+                    }
+                });
+            }
+        });
+    };
+
+    tabs();
 });
