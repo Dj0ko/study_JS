@@ -66,11 +66,12 @@ window.addEventListener('DOMContentLoaded', function () {
         //Вешаем обработчик события для открытия и закрытия меню
         body.addEventListener('click', (event) => {
             let target = event.target;
+            console.log('target: ', target);
 
             if (target.closest('.menu')) {
                 handlerMenu();
             } else if (target.classList.contains('close-btn') || !target.closest('menu')) {
-                handlerMenu();
+                menu.classList.remove('active-menu');
             } else {
                 target = target.closest('li');
 
