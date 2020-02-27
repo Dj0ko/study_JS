@@ -342,49 +342,81 @@ window.addEventListener('DOMContentLoaded', function () {
 
     changeImage();
 
-    //Функция, для ввода только цифр
-    const validationCalc = () => {
-        //получаем необходимые элементы
-        const calcInputNumber = document.querySelectorAll('input[type="number"]');
+    // //Функция, для ввода только цифр
+    // const validationCalc = () => {
+    //     //получаем необходимые элементы
+    //     const calcBlock = document.querySelector('.calc-block'),
+    //         calcInput = calcBlock.querySelectorAll('input');
 
-        //перебираем элементы и разрешаем запись только цифр
-        calcInputNumber.forEach((elem) => {
-            elem.addEventListener('input', () => {
-                elem.value = elem.value.replace(/\D/g, '');
-            });
-        });
-    };
+    //     //перебираем элементы и разрешаем запись только цифр
+    //     calcInput.forEach((elem) => {
+    //         elem.addEventListener('input', () => {
+    //             elem.value = elem.value.replace(/\D/g, '');
+    //         });
+    //     });
+    // };
 
-    validationCalc();
+    // validationCalc();
 
     //Реализация калькулятора
 
-    const calc = () => {
+    const calc = (price = 100) => {
         //получаем необходимые элементы
         const calcBlock = document.querySelector('.calc-block'),
             calcType = document.querySelector('.calc-type'),
-            // calcSquare = document.querySelector('.calc-square'),
-            // calcCount = document.querySelector('.calc-count'),
-            // calcDay = document.querySelector('.calc-day'),
+            calcSquare = document.querySelector('.calc-square'),
+            calcCount = document.querySelector('.calc-count'),
+            calcDay = document.querySelector('.calc-day'),
+            calcInput = calcBlock.querySelectorAll('input'),
             totalValue = document.getElementById('total');
-            const calcInputNumber = calcBlock.querySelectorAll('input');
-            console.log('calcInputNumber: ', calcInputNumber);
+
+        const validationCalc = () => {
+            calcInput.forEach((elem) => {
+                elem.addEventListener('input', () => {
+                    elem.value = elem.value.replace(/\D/g, '');
+                });
+            });
+        };
+
+        validationCalc();
+        calcSquare.addEventListener('input', (event) => {
+            calcSquare.value = calcSquare.value.replace(/\D/g, '');
+        });
+
+
+        const countSum = () => {
+            let total = 0,
+                countValue = 1,
+                dayValue = 1;
+            const typeValue = calcType.options[calcType.selectedIndex].value,
+                squareValue = +calcSquare.value;
+
+            if (calcCount.value > 1) {
+                countValue += (calcCount.value - 1) / 10;
+            }
+
+            if (calcDay.value && calcDay.value < 5) {
+                dayValue *= 2;
+            } else if (calcDay.value && calcDay.value < 10) {
+                dayValue *= 1.5;
+            }
+
+            if (typeValue && squareValue) {
+                total = Math.floor(price * typeValue * squareValue * countValue * dayValue);
+            }
+
+            totalValue.textContent = total;
+        };
 
         calcBlock.addEventListener('change', (event) => {
             const target = event.target;
 
-            // if (target.matches('.calc-type') || target.matches('.calc-square') 
-            // || target.matches('.calc-count') || target.matches('.calc-day')) {
-            //     console.log(1);
-            // }
-
-            if (target === calcType || target === calcSquare
-                 || target === calcCount || target === calcDay) {
-                    console.log(1);
+            if (target.matches('select') || target.matches('input')) {
+                countSum();
             }
         });
 
     };
 
-    calc();
+    calc(100);
 });
