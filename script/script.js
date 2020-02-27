@@ -379,10 +379,6 @@ window.addEventListener('DOMContentLoaded', function () {
         };
 
         validationCalc();
-        calcSquare.addEventListener('input', (event) => {
-            calcSquare.value = calcSquare.value.replace(/\D/g, '');
-        });
-
 
         const countSum = () => {
             let total = 0,
