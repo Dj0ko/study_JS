@@ -191,7 +191,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 }
             }
         };
-        
+
         tabHeader.addEventListener('click', (event) => {
             let target = event.target;
             target = target.closest('.service-header-tab');
@@ -346,7 +346,7 @@ window.addEventListener('DOMContentLoaded', function () {
     const validationCalc = () => {
         //получаем необходимые элементы
         const calcInputNumber = document.querySelectorAll('input[type="number"]');
-        
+
         //перебираем элементы и разрешаем запись только цифр
         calcInputNumber.forEach((elem) => {
             elem.addEventListener('input', () => {
@@ -356,4 +356,35 @@ window.addEventListener('DOMContentLoaded', function () {
     };
 
     validationCalc();
+
+    //Реализация калькулятора
+
+    const calc = () => {
+        //получаем необходимые элементы
+        const calcBlock = document.querySelector('.calc-block'),
+            calcType = document.querySelector('.calc-type'),
+            // calcSquare = document.querySelector('.calc-square'),
+            // calcCount = document.querySelector('.calc-count'),
+            // calcDay = document.querySelector('.calc-day'),
+            totalValue = document.getElementById('total');
+            const calcInputNumber = calcBlock.querySelectorAll('input');
+            console.log('calcInputNumber: ', calcInputNumber);
+
+        calcBlock.addEventListener('change', (event) => {
+            const target = event.target;
+
+            // if (target.matches('.calc-type') || target.matches('.calc-square') 
+            // || target.matches('.calc-count') || target.matches('.calc-day')) {
+            //     console.log(1);
+            // }
+
+            if (target === calcType || target === calcSquare
+                 || target === calcCount || target === calcDay) {
+                    console.log(1);
+            }
+        });
+
+    };
+
+    calc();
 });
