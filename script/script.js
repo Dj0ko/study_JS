@@ -345,7 +345,8 @@ window.addEventListener('DOMContentLoaded', function () {
     //Функция, для ввода только цифр
     const validationCalc = () => {
         //получаем необходимые элементы
-        const calcInputNumber = document.querySelectorAll('input[type="number"]');
+        const calcBlock = document.querySelector('.calc-block'),
+        calcInputNumber = calcBlock.querySelectorAll('input');
         
         //перебираем элементы и разрешаем запись только цифр
         calcInputNumber.forEach((elem) => {
