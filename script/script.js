@@ -230,7 +230,7 @@ window.addEventListener('DOMContentLoaded', function () {
         addDots();
         // получаем все точки
         const dot = document.querySelectorAll('.dot');
-        
+
 
         //задаём номер слайда
         let currentSlide = 0,
@@ -316,4 +316,43 @@ window.addEventListener('DOMContentLoaded', function () {
     };
 
     slider();
+
+    //Функция замены изображения по наведению на него мышкой
+
+    const changeImage = () => {
+        // получаем все изображения
+        const commandPhoto = document.querySelectorAll('.command__photo');
+
+        commandPhoto.forEach((elem) => {
+            // получаем ссылку на изображения по умолчанию
+            let currentImage = elem.src;
+
+            // обработчик события: при наведении меняем изображение
+            elem.addEventListener('mouseenter', (event) => {
+                event.target.src = event.target.dataset.img;
+            });
+            // обработчик события: если убираем курсор, то возвращаем изображение по умолчанию
+            elem.addEventListener('mouseleave', (event) => {
+                event.target.src = currentImage;
+            });
+        });
+
+    };
+
+    changeImage();
+
+    //Функция, для ввода только цифр
+    const validationCalc = () => {
+        //получаем необходимые элементы
+        const calcInputNumber = document.querySelectorAll('input[type="number"]');
+        
+        //перебираем элементы и разрешаем запись только цифр
+        calcInputNumber.forEach((elem) => {
+            elem.addEventListener('input', () => {
+                elem.value = elem.value.replace(/\D/g, '');
+            });
+        });
+    };
+
+    validationCalc();
 });
