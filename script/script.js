@@ -426,14 +426,56 @@ window.addEventListener('DOMContentLoaded', function () {
 
         //получаем форму
         const form = document.getElementById('form1');
-        console.log('form: ', form);
-
+        // создаём элемент, который будем добавлять на страницу
         const statusMessage = document.createElement('div');
-        statusMessage.textContent = 'Тут будет сообщение';
-        form.appendChild(statusMessage);
+        statusMessage.style.cssText = `font-size: 2rem;
+                                       color: white;`;
 
+        form.addEventListener('submit', (event) => {
+            //отменяем стандартное поведение, для отмены перезагрузки страницы
+            event.preventDefault();
+            // добавляем элемент
+            form.appendChild(statusMessage);
+            //добавляем сообщение о начале загрузки
+            statusMessage.textContent = loadMessage;
+            // создаем объект FormData, считывающий все данные с формы и имеющий аттрибут name
+            const formData = new FormData(form);
+            //записываем данные в объект
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body,
+                () => {
+                    statusMessage.textContent = successMessage;
+                },
+                (error) => {
+                    statusMessage.textContent = errorMessage;
+                    console.log(error);
+                });
+        });
 
-
+        //функция запроса на сервер
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+                //если без ошибок , то выводим сообщение об успешной загрузке
+                if (request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            });
+            //настраиваем запрос
+            request.open('POST', './server.php');
+            //добавляем заголовки в json , могут быть в form-data
+            request.setRequestHeader('Content-Type', 'application/json');
+            //отправляем объект в json формате
+            request.send(JSON.stringify(body));
+        }
     };
 
     sendForm();
