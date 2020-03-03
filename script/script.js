@@ -418,18 +418,40 @@ window.addEventListener('DOMContentLoaded', function () {
 
     //send-ajax-form
 
-    const sendForm = () => {
+    const sendForm = (id) => {
         //создаем сообщения
         const errorMessage = 'Что-то пошло не так...',
             loadMessage = 'Загрузка...',
             successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
 
         //получаем форму
-        const form = document.getElementById('form1');
+        const form = document.getElementById(id);
         // создаём элемент, который будем добавлять на страницу
         const statusMessage = document.createElement('div');
         statusMessage.style.cssText = `font-size: 2rem;
                                        color: white;`;
+
+        //функция запроса на сервер
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+                //если без ошибок , то выводим сообщение об успешной загрузке
+                if (request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            });
+            //настраиваем запрос
+            request.open('POST', './server.php');
+            //добавляем заголовки в json , могут быть в form-data
+            request.setRequestHeader('Content-Type', 'application/json');
+            //отправляем объект в json формате
+            request.send(JSON.stringify(body));
+        }
 
         form.addEventListener('submit', (event) => {
             //отменяем стандартное поведение, для отмены перезагрузки страницы
@@ -455,28 +477,28 @@ window.addEventListener('DOMContentLoaded', function () {
                 });
         });
 
-        //функция запроса на сервер
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-                //если без ошибок , то выводим сообщение об успешной загрузке
-                if (request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
+        // Валидация данных
+        const inputValidation = () => {
+            //получаем все инпуты
+            const inputs = document.querySelectorAll('input');
+            //перебираем их
+            inputs.forEach(elem => {
+                elem.addEventListener('input', () => {
+                    //если инпут с type='text', то запрещаем ввод любых символов кроме Кириллицы и пробелов
+                    if (elem.type === 'text') {
+                        elem.value = elem.value.replace(/[^а-яА-Я ]/, '');
+                    }
+                    //если инпут с type='tel', то разрешаем ввод только цифр и знака "+"
+                    if (elem.type === 'tel') {
+                        elem.value = elem.value.replace(/[^\+\d]/, '');
+                    }
+                });
             });
-            //настраиваем запрос
-            request.open('POST', './server.php');
-            //добавляем заголовки в json , могут быть в form-data
-            request.setRequestHeader('Content-Type', 'application/json');
-            //отправляем объект в json формате
-            request.send(JSON.stringify(body));
-        }
+        };
+        inputValidation();
     };
 
-    sendForm();
+    sendForm('form1');
+    sendForm('form2');
+    sendForm('form3');
 });
