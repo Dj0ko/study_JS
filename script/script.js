@@ -432,26 +432,30 @@ window.addEventListener('DOMContentLoaded', function () {
                                        color: white;`;
 
         //функция запроса на сервер
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-                //если без ошибок , то выводим сообщение об успешной загрузке
-                if (request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
+        const postData = (body) => {
+
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
+
+                request.addEventListener('readystatechange', () => {
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+                    //если без ошибок , то выводим сообщение об успешной загрузке
+                    if (request.status === 200) {
+                        resolve();
+                    } else {
+                        reject(request.status);
+                    }
+                });
+                //настраиваем запрос
+                request.open('POST', './server.php');
+                //добавляем заголовки в json , могут быть в form-data
+                request.setRequestHeader('Content-Type', 'application/json');
+                //отправляем объект в json формате
+                request.send(JSON.stringify(body));
             });
-            //настраиваем запрос
-            request.open('POST', './server.php');
-            //добавляем заголовки в json , могут быть в form-data
-            request.setRequestHeader('Content-Type', 'application/json');
-            //отправляем объект в json формате
-            request.send(JSON.stringify(body));
-        }
+        };
 
         form.addEventListener('submit', (event) => {
             //отменяем стандартное поведение, для отмены перезагрузки страницы
@@ -467,11 +471,12 @@ window.addEventListener('DOMContentLoaded', function () {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body,
-                () => {
+            postData(body)
+                .then(() => {
                     statusMessage.textContent = successMessage;
-                },
-                (error) => {
+                    form.reset();
+                })
+                .catch((error) => {
                     statusMessage.textContent = errorMessage;
                     console.log(error);
                 });
