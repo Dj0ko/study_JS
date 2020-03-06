@@ -433,27 +433,13 @@ window.addEventListener('DOMContentLoaded', function () {
 
         //функция запроса на сервер
         const postData = (body) => {
-
-            return new Promise((resolve, reject) => {
-                const request = new XMLHttpRequest();
-
-                request.addEventListener('readystatechange', () => {
-                    if (request.readyState !== 4) {
-                        return;
-                    }
-                    //если без ошибок , то выводим сообщение об успешной загрузке
-                    if (request.status === 200) {
-                        resolve();
-                    } else {
-                        reject(request.status);
-                    }
-                });
-                //настраиваем запрос
-                request.open('POST', './server.php');
-                //добавляем заголовки в json , могут быть в form-data
-                request.setRequestHeader('Content-Type', 'application/json');
-                //отправляем объект в json формате
-                request.send(JSON.stringify(body));
+            // fetch
+            return fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             });
         };
 
@@ -472,7 +458,10 @@ window.addEventListener('DOMContentLoaded', function () {
                 body[key] = val;
             });
             postData(body)
-                .then(() => {
+                .then((response) => {
+                    if (response.status !== 200) {
+                        throw new Error('status network not 200');
+                    }
                     statusMessage.textContent = successMessage;
                     form.reset();
                 })
