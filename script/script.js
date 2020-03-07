@@ -468,6 +468,11 @@ window.addEventListener('DOMContentLoaded', function () {
                 .catch((error) => {
                     statusMessage.textContent = errorMessage;
                     console.log(error);
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 3000);
                 });
         });
 
