@@ -36,103 +36,48 @@ const togglePopUp = () => {
             cancelAnimationFrame(closePopUp);
         }
     }
-    window.addEventListener('resize', () => {
-        console.log('innerWidth: ', innerWidth);
+    // реализуем открытие popup окна c помощью анимации
+    popUpBtn.forEach((elem) => {
+        elem.addEventListener('click', () => {
+            if (innerWidth >= 768) {
+                console.log('innerWidth: ', innerWidth);
+                openPopUp = requestAnimationFrame(popUpAnimateOpen);
+            } else {
+                console.log('innerWidth: ', innerWidth);
+                popupContent.style.top = 10 + '%';
+                popup.style.display = 'block';
+            }
+        });
+    });
+
+    // реализуем закрытие popup окна на крестик или если кликнули мимо окна
+    popup.addEventListener('click', (event) => {
         if (innerWidth >= 768) {
-            // реализуем открытие popup окна c помощью анимации
-            popUpBtn.forEach((elem) => {
-                elem.addEventListener('click', () => {
-                    openPopUp = requestAnimationFrame(popUpAnimateOpen);
-                });
-            });
+            let target = event.target;
 
-            // реализуем закрытие popup окна на крестик или если кликнули мимо окна
-            popup.addEventListener('click', (event) => {
-                let target = event.target;
+            if (target.classList.contains('popup-close')) {
+                closePopUp = requestAnimationFrame(popUpAnimateClose);
+            } else {
+                target = target.closest('.popup-content');
 
-                if (target.classList.contains('popup-close')) {
+                if (!target) {
                     closePopUp = requestAnimationFrame(popUpAnimateClose);
-                } else {
-                    target = target.closest('.popup-content');
-
-                    if (!target) {
-                        closePopUp = requestAnimationFrame(popUpAnimateClose);
-                    }
                 }
-
-            });
+            }
         } else {
-            // Открытие popUp окна если ширина экрана меньше 768
-            popUpBtn.forEach((elem) => {
-                elem.addEventListener('click', () => {
-                    popup.style.display = 'block';
-                });
-            });
+            let target = event.target;
 
-            // Закрытие popUp окна если ширина экрана меньше 768
-            popup.addEventListener('click', (event) => {
-                let target = event.target;
+            if (target.classList.contains('popup-close')) {
+                popup.style.display = 'none';
+            } else {
+                target = target.closest('.popup-content');
 
-                if (target.classList.contains('popup-close')) {
+                if (!target) {
                     popup.style.display = 'none';
-                } else {
-                    target = target.closest('.popup-content');
-
-                    if (!target) {
-                        popup.style.display = 'none';
-                    }
                 }
-
-            });
+            }
         }
     });
-    // if (innerWidth >= 768) {
-    //     // реализуем открытие popup окна c помощью анимации
-    //     popUpBtn.forEach((elem) => {
-    //         elem.addEventListener('click', () => {
-    //             openPopUp = requestAnimationFrame(popUpAnimateOpen);
-    //         });
-    //     });
-
-    //     // реализуем закрытие popup окна на крестик или если кликнули мимо окна
-    //     popup.addEventListener('click', (event) => {
-    //         let target = event.target;
-
-    //         if (target.classList.contains('popup-close')) {
-    //             closePopUp = requestAnimationFrame(popUpAnimateClose);
-    //         } else {
-    //             target = target.closest('.popup-content');
-
-    //             if (!target) {
-    //                 closePopUp = requestAnimationFrame(popUpAnimateClose);
-    //             }
-    //         }
-
-    //     });
-    // } else {
-    //     // Открытие popUp окна если ширина экрана меньше 768
-    //     popUpBtn.forEach((elem) => {
-    //         elem.addEventListener('click', () => {
-    //             popup.style.display = 'block';
-    //         });
-    //     });
-
-    //     // Закрытие popUp окна если ширина экрана меньше 768
-    //     popup.addEventListener('click', (event) => {
-    //         let target = event.target;
-
-    //         if (target.classList.contains('popup-close')) {
-    //             popup.style.display = 'none';
-    //         } else {
-    //             target = target.closest('.popup-content');
-
-    //             if (!target) {
-    //                 popup.style.display = 'none';
-    //             }
-    //         }
-
-    //     });
-    // }
 };
 
 export default togglePopUp;

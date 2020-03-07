@@ -66,11 +66,11 @@ const sendForm = (id) => {
             elem.addEventListener('input', () => {
                 //если инпут с type='text', то запрещаем ввод любых символов кроме Кириллицы и пробелов
                 if (elem.type === 'text') {
-                    elem.value = elem.value.replace(/[^а-яА-Я ]/, '');
+                    elem.value = elem.value.replace(/[^а-яА-Я ]/g, '');
                 }
                 //если инпут с type='tel', то разрешаем ввод только цифр и знака "+"
                 if (elem.type === 'tel') {
-                    elem.value = elem.value.replace(/[^\+\d]/, '');
+                    elem.value = elem.value.replace(/[^\+\d]/g, '');
                 }
             });
         });
