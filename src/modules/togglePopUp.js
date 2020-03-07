@@ -36,14 +36,12 @@ const togglePopUp = () => {
             cancelAnimationFrame(closePopUp);
         }
     }
-    // реализуем открытие popup окна c помощью анимации
+    // реализуем открытие popup окна c помощью анимации если ширина окна больше 768
     popUpBtn.forEach((elem) => {
         elem.addEventListener('click', () => {
             if (innerWidth >= 768) {
-                console.log('innerWidth: ', innerWidth);
                 openPopUp = requestAnimationFrame(popUpAnimateOpen);
             } else {
-                console.log('innerWidth: ', innerWidth);
                 popupContent.style.top = 10 + '%';
                 popup.style.display = 'block';
             }
