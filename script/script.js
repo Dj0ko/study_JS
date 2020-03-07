@@ -483,9 +483,8 @@ window.addEventListener('DOMContentLoaded', function () {
         });
 
         // Валидация данных
-        const inputValidation = () => {
-            //получаем все инпуты
-            const inputs = document.querySelectorAll('input');
+            //получаем все инпуты формы
+            const inputs = form.querySelectorAll('input');
             //перебираем их
             inputs.forEach(elem => {
                 elem.addEventListener('input', () => {
@@ -499,8 +498,6 @@ window.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             });
-        };
-        inputValidation();
     };
 
     sendForm('form1');
