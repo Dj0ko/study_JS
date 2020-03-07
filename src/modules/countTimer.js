@@ -1,7 +1,10 @@
-function countTimer(deadline) {
+function countTimer() {
     const timerHours = document.querySelector('#timer-hours'),
         timerMinutes = document.querySelector('#timer-minutes'),
         timerSeconds = document.querySelector('#timer-seconds');
+
+    //установим дедлайн, который всегда больше текущего времени на 10 минут
+    let deadline = new Date(new Date().setMinutes(new Date().getMinutes() + 10));
 
     // Функция, возвращающая часы, минуты и секунды
     function getTimeRemaining() {

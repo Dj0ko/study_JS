@@ -10,7 +10,7 @@ import calc from './modules/calc';
 import sendForm from './modules/sendForm';
 
 // Функция таймера
-countTimer('25 february 2020');
+countTimer();
 //меню
 toggleMenu();
 // popup
