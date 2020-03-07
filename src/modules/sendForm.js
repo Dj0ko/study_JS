@@ -1,3 +1,5 @@
+'use strict';
+
 const sendForm = (id) => {
     //создаем сообщения
     const errorMessage = 'Что-то пошло не так...',

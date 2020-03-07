@@ -1,3 +1,5 @@
+'use strict';
+
 const toggleMenu = () => {
     //получаем доступ к кнопке "Меню"
     const btnMenu = document.querySelector('.menu'),

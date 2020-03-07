@@ -1,3 +1,5 @@
+'use strict';
+
 function countTimer() {
     const timerHours = document.querySelector('#timer-hours'),
         timerMinutes = document.querySelector('#timer-minutes'),

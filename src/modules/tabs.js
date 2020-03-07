@@ -1,3 +1,5 @@
+'use strict';
+
 const tabs = () => {
     //получаем необходимые элементы
     const tabHeader = document.querySelector('.service-header'),

@@ -1,3 +1,5 @@
+'use strict';
+
 const slider = () => {
     // получаем элементы со страницы
     const slide = document.querySelectorAll('.portfolio-item'),

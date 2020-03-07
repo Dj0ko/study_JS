@@ -1,3 +1,5 @@
+'use strict';
+
 const calc = (price = 100) => {
     //получаем необходимые элементы
     const calcBlock = document.querySelector('.calc-block'),

@@ -1,3 +1,5 @@
+'use strict';
+
 const togglePopUp = () => {
     // получаем доступ к popUp окну
     const popup = document.querySelector('.popup'),
